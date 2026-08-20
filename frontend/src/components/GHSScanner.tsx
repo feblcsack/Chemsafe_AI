@@ -29,12 +29,21 @@ export default function GHSScanner({ onResult }: Props) {
   const [captureStatus, setCaptureStatus] = useState<string | null>(null);
   const [videoSize, setVideoSize] = useState({ width: 1, height: 1 });
 
+  const isMobileDevice =
+    typeof navigator !== "undefined" &&
+    (navigator.maxTouchPoints > 0 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  const previewIntervalMs = isMobileDevice ? 1400 : 700;
+  const captureTimeoutMs = isMobileDevice ? 45000 : 15000;
+  const cameraConstraints = isMobileDevice
+    ? { facingMode: "environment", width: { ideal: 960 }, height: { ideal: 540 }, frameRate: { ideal: 15, max: 24 } }
+    : { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 24, max: 30 } };
+
   useEffect(() => {
     let stream: MediaStream;
     (async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }, // rear camera on phones
+          video: cameraConstraints,
         });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
@@ -81,7 +90,7 @@ export default function GHSScanner({ onResult }: Props) {
           captureInProgressRef.current ||
           !videoRef.current
         ) {
-          schedulePreview(700); // Faster cadence: 700ms instead of 900ms
+          schedulePreview(previewIntervalMs);
           return;
         }
 
@@ -95,7 +104,7 @@ export default function GHSScanner({ onResult }: Props) {
           // silent — live preview is best-effort, the capture flow handles real errors
         } finally {
           previewInFlightRef.current = false;
-          schedulePreview(700); // Faster inference loop
+          schedulePreview(previewIntervalMs);
         }
       }, delayMs);
     };
@@ -205,7 +214,7 @@ export default function GHSScanner({ onResult }: Props) {
         setCaptureStatus(null);
         setError("Scan timeout. Please try again.");
       }
-    }, 15000); // 15 second timeout
+    }, captureTimeoutMs);
 
     try {
       console.log("Detecting GHS symbols...");
@@ -238,11 +247,13 @@ export default function GHSScanner({ onResult }: Props) {
       console.log("OCR result:", ocr);
 
       console.log("Calling onResult callback...");
-      await Promise.resolve(onResult(detections, ocr.text, ocr.confidence));
+      void Promise.resolve(onResult(detections, ocr.text, ocr.confidence)).catch((err) => {
+        console.error("Scan result handler failed:", err);
+      });
       console.log("Capture completed successfully");
     } catch (err) {
       console.error("Detection failed:", err);
-      setError("Detection failed. Try again with better lighting.");
+      setError(err instanceof Error ? err.message : "Detection failed. Try again with better lighting.");
     } finally {
       clearTimeout(timeoutId);
       if (successTimeoutRef.current !== null) {
