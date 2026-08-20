@@ -13,6 +13,21 @@ import {
 
 import CameraPPEOverlay from "@/components/CameraPPEOverlay";
 
+// Loading Skeleton Component
+function LoadingSkeleton() {
+  return (
+    <div className="animate-pulse space-y-4">
+      <div className="h-8 bg-white/5 rounded w-1/3" />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className="h-24 bg-white/5 rounded" />
+        ))}
+      </div>
+      <div className="h-64 bg-white/5 rounded" />
+    </div>
+  );
+}
+
 interface Worker {
   worker_id: string;
   zone_id: string;
@@ -46,10 +61,14 @@ export default function AdminLiveMonitoring() {
   const [sendingAlert, setSendingAlert] = useState(false);
   const [monitoringActive, setMonitoringActive] = useState(false);
   const [startingMonitoring, setStartingMonitoring] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadMonitoringData();
-    checkMonitoringStatus();
+    async function init() {
+      await Promise.all([loadMonitoringData(), checkMonitoringStatus()]);
+      setIsLoading(false);
+    }
+    init();
     
     const supabase = createClient();
     const topic = 'admin-live-monitoring';
@@ -359,6 +378,10 @@ export default function AdminLiveMonitoring() {
 
   return (
     <div className="space-y-6">
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : (
+        <>
       {/* Camera Monitoring Control */}
       <Card className="border-blue-500/30 bg-blue-500/5">
         <CardContent className="pt-5">
@@ -706,6 +729,8 @@ export default function AdminLiveMonitoring() {
           )}
         </CardContent>
       </Card>
+      </>
+      )}
     </div>
   );
 }

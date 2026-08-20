@@ -35,7 +35,7 @@ _monitor_task: Optional[asyncio.Task] = None
 
 # Configuration
 FRAME_INTERVAL_S = float(os.getenv("CAMERA_FRAME_INTERVAL_S", "2.0"))  # Check every 2 seconds
-COMPLIANCE_CHECK_INTERVAL_S = float(os.getenv("COMPLIANCE_CHECK_INTERVAL_S", "5.0"))  # Log every 5 seconds
+COMPLIANCE_CHECK_INTERVAL_S = float(os.getenv("COMPLIANCE_CHECK_INTERVAL_S", "1.2"))  # Faster detection: ~1.2 seconds
 
 
 class CameraStreamReader:
@@ -123,14 +123,20 @@ async def monitor_camera_station(station_id: str, camera_url: str, zone_id: str)
             
             # Only run detection at configured interval
             if now - last_compliance_check < COMPLIANCE_CHECK_INTERVAL_S:
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.2)  # Shorter sleep for faster loop iteration
                 continue
             
             last_compliance_check = now
             
             # Convert frame to JPEG bytes for PPE engine
-            _, buffer = cv2.imencode('.jpg', frame)
+            # Use adaptive quality: lower quality = faster encoding
+            encode_quality = int(os.getenv("JPEG_ENCODE_QUALITY", "75"))  # 75 is good balance
+            _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, encode_quality])
             frame_bytes = buffer.tobytes()
+            
+            # Store frame bytes for MJPEG streaming
+            _active_monitors[station_id]['last_frame_bytes'] = frame_bytes
+            _active_monitors[station_id]['last_frame_time'] = now
             
             # Run PPE detection
             result = await asyncio.to_thread(
@@ -182,7 +188,7 @@ async def monitor_camera_station(station_id: str, camera_url: str, zone_id: str)
                 
                 last_compliance_status = result.copy()
             
-            await asyncio.sleep(FRAME_INTERVAL_S)
+            # No additional sleep - COMPLIANCE_CHECK_INTERVAL_S is the only throttle
             
     except asyncio.CancelledError:
         logger.info(f"Camera monitor for station {station_id} cancelled")
@@ -232,7 +238,9 @@ async def start_monitoring(background_tasks: BackgroundTasks):
                 'camera_url': camera_url,
                 'zone_id': zone_id,
                 'started_at': datetime.now().isoformat(),
-                'last_detection': None
+                'last_detection': None,
+                'last_frame_bytes': None,  # For MJPEG streaming
+                'last_frame_time': 0,  # Track frame timing
             }
             
             # Start monitor task
@@ -307,3 +315,79 @@ async def get_latest_detection(station_id: str):
         raise HTTPException(status_code=404, detail="No detection data available yet")
     
     return detection
+
+
+@router.get("/station/{station_id}/mjpeg")
+async def stream_mjpeg(station_id: str, quality: int = 75):
+    """
+    MJPEG proxy stream for IP cameras.
+    Optimized for performance with configurable quality.
+    
+    Query params:
+    - quality: JPEG quality 1-100 (default 75, lower = faster/smaller)
+    """
+    if station_id not in _active_monitors:
+        raise HTTPException(status_code=404, detail="Station not being monitored")
+    
+    # Validate quality parameter
+    quality = max(50, min(quality, 95))  # Clamp between 50-95
+    
+    async def generate_mjpeg():
+        """Generator that yields JPEG frames in MJPEG format"""
+        last_frame_bytes = None
+        frame_count = 0
+        
+        try:
+            while station_id in _active_monitors:
+                monitor_info = _active_monitors.get(station_id)
+                if not monitor_info:
+                    break
+                
+                frame_data = monitor_info.get('last_frame_bytes')
+                
+                if frame_data and frame_data != last_frame_bytes:
+                    frame_count += 1
+                    
+                    # Optional: Re-compress frame for bandwidth optimization
+                    # Only if quality is lower than 75 (detection uses 75)
+                    if quality < 75:
+                        try:
+                            # Decode and re-encode at lower quality
+                            import cv2
+                            import numpy as np
+                            nparr = np.frombuffer(frame_data, np.uint8)
+                            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                            if img is not None:
+                                _, buffer = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, quality])
+                                frame_data = buffer.tobytes()
+                        except:
+                            pass  # Use original if re-encoding fails
+                    
+                    # Yield MJPEG frame
+                    yield (
+                        b'--frame\r\n'
+                        b'Content-Type: image/jpeg\r\n\r\n' + 
+                        frame_data + 
+                        b'\r\n'
+                    )
+                    last_frame_bytes = frame_data
+                
+                # Adaptive frame rate: ~15-20fps for smooth viewing
+                # Lower FPS = less bandwidth, still smooth enough
+                await asyncio.sleep(0.05)  # 20fps max
+                
+        except asyncio.CancelledError:
+            logger.info(f"MJPEG stream for station {station_id} cancelled (served {frame_count} frames)")
+        except Exception as e:
+            logger.error(f"Error in MJPEG stream: {e}")
+    
+    return StreamingResponse(
+        generate_mjpeg(),
+        media_type="multipart/x-mixed-replace; boundary=frame",
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+            "X-Accel-Buffering": "no"  # Disable proxy buffering for Railway/Nginx
+        }
+    )

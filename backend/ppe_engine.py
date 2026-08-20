@@ -96,22 +96,39 @@ class PPEEngine:
         result = self.session.run([self.output_name], {self.input_name: arr})[0]
         preds = result[0].T  # [anchors, 15] -> 4 box + 11 class scores
 
-        boxes, scores, class_ids = [], [], []
-        for row in preds:
-            cls_scores = row[4:]
-            cls_id = int(np.argmax(cls_scores))
-            conf = float(cls_scores[cls_id])
-            if conf < confidence:
-                continue
-            cx, cy, w, h = row[:4]
-            x1 = (cx - w / 2 - pad_x) / scale
-            y1 = (cy - h / 2 - pad_y) / scale
-            x2 = (cx + w / 2 - pad_x) / scale
-            y2 = (cy + h / 2 - pad_y) / scale
-            boxes.append([x1, y1, x2, y2])
-            scores.append(conf)
-            class_ids.append(cls_id)
-
+        # ===== VECTORIZED INFERENCE (MUCH FASTER) =====
+        # Extract all class scores at once
+        cls_scores = preds[:, 4:]  # [N, 11]
+        cls_ids = np.argmax(cls_scores, axis=1)  # [N]
+        confidences = np.max(cls_scores, axis=1)  # [N]
+        
+        # Filter by confidence threshold
+        mask = confidences >= confidence
+        if not mask.any():
+            return {
+                "detections": [],
+                "violations": [],
+                "compliant": True,
+                "inference_ms": round((time.perf_counter() - t0) * 1000, 1),
+            }
+        
+        # Get filtered predictions
+        filtered_boxes = preds[mask, :4]  # [cx, cy, w, h]
+        filtered_cls_ids = cls_ids[mask]
+        filtered_confidences = confidences[mask]
+        
+        # Convert box coords vectorized: cx,cy,w,h -> x1,y1,x2,y2 in original image space
+        cx, cy, w, h = filtered_boxes[:, 0], filtered_boxes[:, 1], filtered_boxes[:, 2], filtered_boxes[:, 3]
+        x1 = (cx - w / 2 - pad_x) / scale
+        y1 = (cy - h / 2 - pad_y) / scale
+        x2 = (cx + w / 2 - pad_x) / scale
+        y2 = (cy + h / 2 - pad_y) / scale
+        
+        boxes = np.stack([x1, y1, x2, y2], axis=1).tolist()
+        class_ids = filtered_cls_ids.tolist()
+        scores = filtered_confidences.tolist()
+        
+        # Apply NMS
         keep = self._nms(boxes, scores, np.array(class_ids)) if class_ids else []
 
         detections = [

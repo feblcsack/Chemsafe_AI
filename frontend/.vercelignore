@@ -1,0 +1,8 @@
+# Vercel should ignore backend files
+../backend/
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.md
+../.git/

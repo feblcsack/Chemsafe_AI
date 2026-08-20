@@ -30,8 +30,25 @@ export default function CameraPPEOverlay({ stationId, stationName, cameraUrl, re
   const [error, setError] = useState<string | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  // Adaptive quality based on connection speed
+  const [streamQuality, setStreamQuality] = useState(75);
+  
+  useEffect(() => {
+    // Detect slow connection and reduce quality
+    if ('connection' in navigator) {
+      const conn = (navigator as any).connection;
+      if (conn && (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g')) {
+        setStreamQuality(60); // Lower quality for slow connections
+      }
+    }
+  }, []);
+  
+  // Use quality parameter in proxy URL
+  const proxyUrl = `${process.env.NEXT_PUBLIC_API_URL}/camera/station/${stationId}/mjpeg?quality=${streamQuality}`;
 
-  const drawOverlay = useCallback(() => {
+  // Throttled draw with frame skipping for performance
+  const drawOverlayThrottled = useCallback(() => {
     const image = imageRef.current;
     const canvas = canvasRef.current;
     if (!image || !canvas || !detection || !image.naturalWidth || !image.naturalHeight) return;
@@ -39,11 +56,12 @@ export default function CameraPPEOverlay({ stationId, stationName, cameraUrl, re
     const container = canvas.getBoundingClientRect();
     if (container.width === 0 || container.height === 0) return;
 
-    const dpr = window.devicePixelRatio || 1;
+    // Use lower DPR on slower devices to improve performance
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(container.width * dpr);
     canvas.height = Math.round(container.height * dpr);
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false }); // Disable alpha for better performance
     if (!ctx) return;
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -85,9 +103,16 @@ export default function CameraPPEOverlay({ stationId, stationName, cameraUrl, re
     });
   }, [detection]);
 
+  const drawOverlay = drawOverlayThrottled;
+
   useEffect(() => {
-    // Poll for latest detection every 2 seconds
-    const interval = setInterval(async () => {
+    // Optimized polling - only when tab is visible
+    let interval: NodeJS.Timeout | null = null;
+    
+    const startPolling = () => {
+      if (interval) return;
+      
+      interval = setInterval(async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/camera/station/${stationId}/latest`);
         
@@ -108,16 +133,46 @@ export default function CameraPPEOverlay({ stationId, stationName, cameraUrl, re
         setError("Connection error");
         setLoading(false);
       }
-    }, 2000);
+    }, 3000); // Increased to 3s to reduce load
+    };
+    
+    // Start polling immediately
+    startPolling();
+    
+    // Pause polling when tab hidden (major performance win!)
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (interval) {
+          clearInterval(interval);
+          interval = null;
+        }
+      } else {
+        startPolling();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [stationId]);
 
   useEffect(() => {
+    // Debounced resize handler
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(drawOverlay, 100);
+    };
+    
     drawOverlay();
-    const handleResize = () => drawOverlay();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, [drawOverlay]);
 
   const getDetectedPPE = () => {
@@ -144,17 +199,20 @@ export default function CameraPPEOverlay({ stationId, stationName, cameraUrl, re
     <div className="space-y-3">
       {/* Camera Feed with Live Detection Overlay */}
       <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-        {/* Camera Stream */}
+        {/* Camera Stream via MJPEG Proxy */}
         <img
           ref={imageRef}
-          src={cameraUrl}
+          src={proxyUrl}
           alt={`${stationName} live feed`}
           className="w-full h-full object-cover"
           onLoad={() => {
             setLoading(false);
+            setError(null);
             drawOverlay();
           }}
           onError={(e) => {
+            console.error("Failed to load camera stream");
+            setError("Camera stream unavailable");
             const target = e.target as HTMLImageElement;
             target.style.display = "none";
           }}

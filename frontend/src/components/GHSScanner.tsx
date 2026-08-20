@@ -18,10 +18,13 @@ export default function GHSScanner({ onResult }: Props) {
   const previewInFlightRef = useRef(false);
   const captureInProgressRef = useRef(false);
   const successTimeoutRef = useRef<number | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  
   const [ready, setReady] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [liveDetections, setLiveDetections] = useState<Detection[]>([]);
+  const [displayDetections, setDisplayDetections] = useState<Detection[]>([]); // Smoothed detections for rendering
   const [captureSuccess, setCaptureSuccess] = useState(false);
   const [captureStatus, setCaptureStatus] = useState<string | null>(null);
   const [videoSize, setVideoSize] = useState({ width: 1, height: 1 });
@@ -78,7 +81,7 @@ export default function GHSScanner({ onResult }: Props) {
           captureInProgressRef.current ||
           !videoRef.current
         ) {
-          schedulePreview(900);
+          schedulePreview(700); // Faster cadence: 700ms instead of 900ms
           return;
         }
 
@@ -92,7 +95,7 @@ export default function GHSScanner({ onResult }: Props) {
           // silent — live preview is best-effort, the capture flow handles real errors
         } finally {
           previewInFlightRef.current = false;
-          schedulePreview(900);
+          schedulePreview(700); // Faster inference loop
         }
       }, delayMs);
     };
@@ -107,6 +110,78 @@ export default function GHSScanner({ onResult }: Props) {
       }
     };
   }, [ready]);
+
+  // ===== SMOOTH RENDER LOOP =====
+  // Interpolate from current displayDetections to new liveDetections
+  useEffect(() => {
+    if (!ready) return;
+
+    const smoothingFactor = 0.3; // Higher = faster convergence, lower = smoother
+    const gracePeriodFrames = 8; // Keep box visible for N frames after detection lost
+    const detectionPersistence = new Map<string, number>(); // Track how long since last seen
+
+    const renderLoop = () => {
+      if (!ready) return;
+
+      // Smooth transition: exponential moving average of box positions
+      setDisplayDetections(prev => {
+        const newDisplay: Detection[] = [];
+        const seenKeys = new Set<string>();
+
+        // Update existing detections or add new ones
+        liveDetections.forEach(live => {
+          const key = live.class;
+          seenKeys.add(key);
+          detectionPersistence.set(key, 0); // Reset persistence counter
+
+          const existing = prev.find(p => p.class === key);
+          if (existing) {
+            // Interpolate box position
+            const smoothedBox: [number, number, number, number] = [
+              existing.box[0] * (1 - smoothingFactor) + live.box[0] * smoothingFactor,
+              existing.box[1] * (1 - smoothingFactor) + live.box[1] * smoothingFactor,
+              existing.box[2] * (1 - smoothingFactor) + live.box[2] * smoothingFactor,
+              existing.box[3] * (1 - smoothingFactor) + live.box[3] * smoothingFactor,
+            ];
+            newDisplay.push({
+              ...live,
+              box: smoothedBox,
+              confidence: existing.confidence * 0.7 + live.confidence * 0.3,
+            });
+          } else {
+            // New detection, add directly
+            newDisplay.push(live);
+          }
+        });
+
+        // Keep detections that were recently seen (grace period)
+        prev.forEach(p => {
+          if (!seenKeys.has(p.class)) {
+            const frames = detectionPersistence.get(p.class) || 0;
+            if (frames < gracePeriodFrames) {
+              detectionPersistence.set(p.class, frames + 1);
+              newDisplay.push(p); // Keep showing it
+            } else {
+              detectionPersistence.delete(p.class); // Remove after grace period
+            }
+          }
+        });
+
+        return newDisplay;
+      });
+
+      animationFrameRef.current = requestAnimationFrame(renderLoop);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(renderLoop);
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [ready, liveDetections]);
 
   const handleCapture = async () => {
     if (!videoRef.current || !canvasRef.current) {
@@ -193,7 +268,7 @@ export default function GHSScanner({ onResult }: Props) {
 
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,183,7,0.08),transparent_55%)]" />
 
-        {liveDetections.map((d, i) => (
+        {displayDetections.map((d, i) => (
           <motion.div
             key={`${d.class}-${i}`}
             layout
