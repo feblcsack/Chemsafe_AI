@@ -96,6 +96,35 @@ app.include_router(ppe_stream.router, prefix="/ppe", tags=["ppe-stream"])
 app.include_router(camera_monitor.router, prefix="/camera", tags=["camera-monitor"])
 
 
+@app.get("/")
+def root():
+    """Root endpoint"""
+    return {
+        "service": "ChemSafe API",
+        "version": "0.2.0",
+        "status": "running",
+        "docs": "/docs"
+    }
+
+
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "chemsafe-backend"}
+    """Health check endpoint for Railway/monitoring"""
+    return {
+        "status": "ok",
+        "service": "chemsafe-backend",
+        "version": "0.2.0"
+    }
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Log startup information"""
+    print("=" * 60)
+    print("🚀 ChemSafe Backend Starting...")
+    print(f"📍 Environment: {os.getenv('RAILWAY_ENVIRONMENT', 'local')}")
+    print(f"🌐 Port: {os.getenv('PORT', '8000')}")
+    print(f"🔗 Frontend URL: {os.getenv('FRONTEND_URL', 'http://localhost:3000')}")
+    print(f"✅ Health check: /health")
+    print(f"📚 API docs: /docs")
+    print("=" * 60)
