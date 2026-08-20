@@ -36,6 +36,14 @@ class PPEEngine:
     Instantiate ONCE at app startup and reuse for every frame."""
 
     def __init__(self):
+        self.session = None
+        self.input_name = None
+        self.output_name = None
+
+    def _ensure_session(self):
+        if self.session is not None:
+            return
+
         so = ort.SessionOptions()
         so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
         # Cap intra-op threads — on Railway's shared CPU, oversubscribing
@@ -86,6 +94,7 @@ class PPEEngine:
 
     def detect(self, image_bytes: bytes, confidence: float = 0.4, required_ppe: list[str] = None) -> dict:
         t0 = time.perf_counter()
+        self._ensure_session()
 
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         letterboxed, scale, pad_x, pad_y = self._letterbox(img)
