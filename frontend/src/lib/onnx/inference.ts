@@ -69,7 +69,8 @@ export function getSession(): Promise<OrtTypes.InferenceSession> {
       graphOptimizationLevel: "all",
     });
   }
-  return sessionPromise;
+  // TypeScript now knows sessionPromise is not null here
+  return sessionPromise as Promise<OrtTypes.InferenceSession>;
 }
 
 interface Letterbox {

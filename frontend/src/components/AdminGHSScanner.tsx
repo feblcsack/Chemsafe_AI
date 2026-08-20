@@ -9,7 +9,7 @@ import { resolveCurrentUserContext } from "@/lib/supabase/userContext";
 import type { Detection } from "@/lib/onnx/inference";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Shield, ScanSearch } from "lucide-react";
+import { Loader2, Shield, ScanSearch, Settings } from "lucide-react";
 
 interface HazardInfo {
   class: string;

@@ -15,8 +15,8 @@ interface ZoneQRDisplayProps {
 export default function ZoneQRDisplay({ zoneId, zoneName, requiredPpe, hazardTypes }: ZoneQRDisplayProps) {
   
   function handleDownload() {
-    const svg = document.getElementById(`qr-${zoneId}`) as SVGElement;
-    if (!svg) return;
+    const svg = document.getElementById(`qr-${zoneId}`);
+    if (!svg || !(svg instanceof SVGElement)) return;
 
     const svgData = new XMLSerializer().serializeToString(svg);
     const canvas = document.createElement("canvas");

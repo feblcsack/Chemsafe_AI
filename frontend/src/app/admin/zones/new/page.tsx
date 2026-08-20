@@ -40,21 +40,15 @@ export default function NewZonePage() {
       recommendations.forEach((p) => suggested.add(p));
       
       // Additional smart recommendations based on GHS classes
-      switch (d.class) {
-        case "GHS_Symbol_01": // Explosive
-        case "GHS_Symbol_02": // Flammable  
-          suggested.add("safety_boots");
-          suggested.add("helmet");
-          break;
-        case "GHS_Symbol_05": // Corrosive
-        case "GHS_Symbol_06": // Toxic
-          suggested.add("respirator");
-          suggested.add("face_shield");
-          break;
-        case "GHS_Symbol_08": // Health hazard
-          suggested.add("gloves");
-          suggested.add("respirator");
-          break;
+      if (d.class === "GHS_Symbol_EXPLODING_BOMB" || d.class === "GHS_Symbol_FLAME") {
+        suggested.add("safety_boots");
+        suggested.add("helmet");
+      } else if (d.class === "GHS_Symbol_CORROSION" || d.class === "GHS_Symbol_SKULL_AND_CROSSBONES") {
+        suggested.add("respirator");
+        suggested.add("face_shield");
+      } else if (d.class === "GHS_Symbol_HEALTH_HAZARD") {
+        suggested.add("gloves");
+        suggested.add("respirator");
       }
     });
     
