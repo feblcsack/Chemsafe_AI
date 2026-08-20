@@ -8,6 +8,6 @@ pillow==10.4.0
 numpy==1.26.4
 onnxruntime==1.19.2
 websockets==13.1
-opencv-python==4.10.0.84
+opencv-python-headless==4.10.0.84
 # Optional — only needed if using the OpenVINO accelerated single-image endpoint:
 # openvino==2024.4.0
