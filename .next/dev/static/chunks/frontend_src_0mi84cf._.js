@@ -3256,7 +3256,6 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-// Map GHS categories to lucide icons
 const getHazmonIcon = (category)=>{
     const iconMap = {
         'flammable': __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
@@ -3271,7 +3270,6 @@ const getHazmonIcon = (category)=>{
     };
     return iconMap[category] || __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scan$2d$line$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ScanLine$3e$__["ScanLine"];
 };
-// Holo frame theme per rarity — feeds the .hazmon-holo-frame CSS variables
 const RARITY_HOLO = {
     common: {
         a: '#64748b',
@@ -3298,12 +3296,14 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
     _s();
     const [localCard, setLocalCard] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(hazmonCard);
     const [showImageUpload, setShowImageUpload] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [imageError, setImageError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const HazmonIcon = getHazmonIcon(localCard.ghsCategory);
     const holo = RARITY_HOLO[hazmonCard.rarity];
     const weakness = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$types$2f$hazmon$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getWeaknessFor"])(hazmonCard.ghsCategory);
     const WeaknessIcon = weakness ? getHazmonIcon(weakness.ghsCategory) : null;
-    const powerScore = hazmonCard.powerLevel * 20; // 20–100, "threat power" stat
+    const powerScore = hazmonCard.powerLevel * 20;
     const dexNumber = hazmonCard.dexNumber ?? 0;
+    const artworkSrc = hazmonCard.artworkPath || localCard.customImageUrl;
     const rarityTextColors = {
         common: 'text-steel',
         uncommon: 'text-safe',
@@ -3343,7 +3343,8 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                     damping: 25,
                     stiffness: 300
                 },
-                className: "relative w-full max-w-md mx-auto",
+                // PERUBAHAN 1: Lebar dibikin proporsional (max 360px), dikasih max-h 90vh biar nggak bablas
+                className: "relative w-[90vw] max-w-[340px] sm:max-w-[360px] max-h-[90vh] mx-auto flex flex-col",
                 onClick: (e)=>e.stopPropagation(),
                 children: [
                     isNew && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3362,37 +3363,38 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                         },
                         className: "absolute -top-4 left-1/2 -translate-x-1/2 z-20",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                            className: "bg-gradient-to-r from-hazard to-yellow-300 text-ink px-4 py-1.5 font-display font-bold text-sm shadow-lg animate-pulse",
+                            className: "bg-gradient-to-r from-hazard to-yellow-300 text-ink px-4 py-1.5 font-display font-bold text-sm shadow-lg animate-pulse whitespace-nowrap",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
                                     size: 14,
-                                    className: "mr-1"
+                                    className: "mr-1 inline-block"
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 111,
+                                    lineNumber: 112,
                                     columnNumber: 17
                                 }, this),
                                 "New Discovery!"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                            lineNumber: 110,
+                            lineNumber: 111,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                        lineNumber: 104,
+                        lineNumber: 105,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "hazmon-holo-frame rounded-[22px] p-[3px] shadow-2xl",
+                        // PERUBAHAN 2: Frame dipaksa pakai h-full biar adaptif sama flex container
+                        className: "hazmon-holo-frame rounded-[22px] p-[3px] shadow-2xl h-full flex flex-col min-h-0",
                         style: {
                             '--holo-a': holo.a,
                             '--holo-b': holo.b,
                             '--holo-c': holo.c
                         },
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "relative rounded-[19px] bg-ink overflow-hidden border border-black/40",
+                            className: "relative rounded-[19px] bg-ink overflow-hidden border border-black/40 flex flex-col h-full min-h-0",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     onClick: onClose,
@@ -3401,655 +3403,617 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                                         className: "w-4 h-4 text-steel group-hover:text-paper transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                        lineNumber: 134,
+                                        lineNumber: 135,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 130,
+                                    lineNumber: 131,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-start justify-between px-4 pt-4 pb-2",
+                                    className: "overflow-y-auto flex-1 flex flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "min-w-0 pr-2",
+                                            className: "flex items-start justify-between px-4 pt-4 pb-2 flex-shrink-0",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-steel text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5",
-                                                    children: "Basic Hazmon"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 140,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                    className: "font-display text-2xl font-bold text-paper leading-tight truncate",
-                                                    children: hazmonCard.name
-                                                }, void 0, false, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "min-w-0 pr-8",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-steel text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5",
+                                                            children: "Basic Hazmon"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 144,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                            className: "font-display text-xl sm:text-2xl font-bold text-paper leading-tight truncate",
+                                                            children: hazmonCard.name
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 147,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
                                                     lineNumber: 143,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex flex-col items-end gap-1 flex-shrink-0",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border-2",
+                                                            style: {
+                                                                backgroundColor: `${hazmonCard.primaryColor}25`,
+                                                                borderColor: hazmonCard.primaryColor
+                                                            },
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HazmonIcon, {
+                                                                className: "w-4 h-4",
+                                                                style: {
+                                                                    color: hazmonCard.primaryColor
+                                                                },
+                                                                strokeWidth: 2
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                lineNumber: 159,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 152,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-steel text-[10px] font-bold font-display tabular-nums",
+                                                            children: [
+                                                                "N°",
+                                                                String(dexNumber).padStart(2, '0'),
+                                                                "/",
+                                                                __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$types$2f$hazmon$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["HAZMON_TOTAL"]
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 165,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                    lineNumber: 151,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 139,
+                                            lineNumber: 142,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-steel text-[11px] sm:text-xs px-4 -mt-2 pb-3 flex-shrink-0",
+                                            children: hazmonCard.subtitle
+                                        }, void 0, false, {
+                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                            lineNumber: 170,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-col items-end gap-1 flex-shrink-0",
+                                            className: "relative h-40 sm:h-44 mx-3 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center flex-shrink-0",
+                                            style: {
+                                                background: `radial-gradient(circle at 50% 40%, ${hazmonCard.primaryColor}35, ${hazmonCard.secondaryColor}25 70%, transparent 100%)`
+                                            },
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "w-9 h-9 rounded-full flex items-center justify-center border-2",
-                                                    style: {
-                                                        backgroundColor: `${hazmonCard.primaryColor}25`,
-                                                        borderColor: hazmonCard.primaryColor
+                                                    className: "absolute inset-0 hazmon-sparkle-field"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                    lineNumber: 181,
+                                                    columnNumber: 19
+                                                }, this),
+                                                artworkSrc && !imageError ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                                    animate: {
+                                                        scale: [
+                                                            1,
+                                                            1.05,
+                                                            1
+                                                        ]
                                                     },
+                                                    transition: {
+                                                        duration: 3,
+                                                        repeat: Infinity,
+                                                        ease: 'easeInOut'
+                                                    },
+                                                    className: "relative z-10 w-full h-full",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                        src: artworkSrc,
+                                                        alt: hazmonCard.name,
+                                                        className: "w-full h-full object-cover drop-shadow-2xl",
+                                                        onError: ()=>setImageError(true)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                        lineNumber: 189,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                    lineNumber: 184,
+                                                    columnNumber: 21
+                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                                    animate: {
+                                                        scale: [
+                                                            1,
+                                                            1.08,
+                                                            1
+                                                        ],
+                                                        rotate: [
+                                                            0,
+                                                            4,
+                                                            -4,
+                                                            0
+                                                        ]
+                                                    },
+                                                    transition: {
+                                                        duration: 3,
+                                                        repeat: Infinity,
+                                                        ease: 'easeInOut'
+                                                    },
+                                                    className: "relative z-10",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HazmonIcon, {
-                                                        className: "w-4 h-4",
+                                                        className: "w-16 h-16 sm:w-20 sm:h-20",
                                                         style: {
                                                             color: hazmonCard.primaryColor
                                                         },
-                                                        strokeWidth: 2
+                                                        strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                        lineNumber: 155,
+                                                        lineNumber: 202,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                    lineNumber: 197,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute bottom-2 right-2 bg-ink/70 backdrop-blur-sm rounded-md px-2 py-1 border border-white/10",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-paper/80 text-[9px] font-display font-bold tracking-wider",
+                                                        children: "HAZDEX"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                        lineNumber: 211,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 148,
+                                                    lineNumber: 210,
                                                     columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-steel text-[10px] font-bold font-display tabular-nums",
-                                                    children: [
-                                                        "N°",
-                                                        String(dexNumber).padStart(2, '0'),
-                                                        "/",
-                                                        __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$types$2f$hazmon$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["HAZMON_TOTAL"]
-                                                    ]
-                                                }, void 0, true, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute top-2 left-2",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        variant: "muted",
+                                                        className: `${rarityTextColors[hazmonCard.rarity]} text-[10px] uppercase tracking-wider font-bold border border-white/10`,
+                                                        children: hazmonCard.rarity
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                        lineNumber: 217,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                }, void 0, false, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 161,
+                                                    lineNumber: 216,
                                                     columnNumber: 19
+                                                }, this),
+                                                hazmonCard.isMastered && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute top-2 right-2",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        className: "bg-hazard/90 text-ink border-0 text-[10px] font-bold",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"], {
+                                                                size: 11,
+                                                                className: "mr-1 inline-block"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                lineNumber: 227,
+                                                                columnNumber: 25
+                                                            }, this),
+                                                            "Mastered"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                        lineNumber: 226,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                    lineNumber: 225,
+                                                    columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 147,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 138,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-steel text-xs px-4 -mt-2 pb-3",
-                                    children: hazmonCard.subtitle
-                                }, void 0, false, {
-                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 166,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "relative h-48 sm:h-56 mx-3 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center",
-                                    style: {
-                                        background: `radial-gradient(circle at 50% 40%, ${hazmonCard.primaryColor}35, ${hazmonCard.secondaryColor}25 70%, transparent 100%)`
-                                    },
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute inset-0 hazmon-sparkle-field"
-                                        }, void 0, false, {
                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
                                             lineNumber: 175,
                                             columnNumber: 17
                                         }, this),
-                                        hazmonCard.customImageUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                            animate: {
-                                                scale: [
-                                                    1,
-                                                    1.05,
-                                                    1
-                                                ]
-                                            },
-                                            transition: {
-                                                duration: 3,
-                                                repeat: Infinity,
-                                                ease: 'easeInOut'
-                                            },
-                                            className: "relative z-10 w-32 h-32 sm:w-40 sm:h-40",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                                src: hazmonCard.customImageUrl,
-                                                alt: hazmonCard.name,
-                                                className: "w-full h-full object-contain drop-shadow-2xl"
-                                            }, void 0, false, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 190,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 179,
-                                            columnNumber: 19
-                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                            animate: {
-                                                scale: [
-                                                    1,
-                                                    1.08,
-                                                    1
-                                                ],
-                                                rotate: [
-                                                    0,
-                                                    4,
-                                                    -4,
-                                                    0
-                                                ]
-                                            },
-                                            transition: {
-                                                duration: 3,
-                                                repeat: Infinity,
-                                                ease: 'easeInOut'
-                                            },
-                                            className: "relative z-10",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HazmonIcon, {
-                                                className: "w-20 h-20 sm:w-24 sm:h-24",
-                                                style: {
-                                                    color: hazmonCard.primaryColor
-                                                },
-                                                strokeWidth: 1.5
-                                            }, void 0, false, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 209,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 197,
-                                            columnNumber: 19
-                                        }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute bottom-2 right-2 bg-ink/70 backdrop-blur-sm rounded-md px-2 py-1 border border-white/10",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "text-paper/80 text-[9px] font-display font-bold tracking-wider",
-                                                children: "HAZDEX"
-                                            }, void 0, false, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 219,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 218,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute top-2 left-2",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                variant: "muted",
-                                                className: `${rarityTextColors[hazmonCard.rarity]} text-[10px] uppercase tracking-wider font-bold border border-white/10`,
-                                                children: hazmonCard.rarity
-                                            }, void 0, false, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 226,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 225,
-                                            columnNumber: 17
-                                        }, this),
-                                        hazmonCard.isMastered && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute top-2 right-2",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                className: "bg-hazard/90 text-ink border-0 text-[10px] font-bold",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"], {
-                                                        size: 11,
-                                                        className: "mr-1"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                        lineNumber: 236,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    "Mastered"
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 235,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 234,
-                                            columnNumber: 19
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 169,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-4 space-y-3",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "relative overflow-hidden rounded-lg border border-white/10 bg-white/5",
+                                            className: "p-4 space-y-2.5 flex-shrink-0",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-1.5 bg-gradient-to-r from-steel/30 to-transparent px-3 py-1 border-b border-white/10",
+                                                    className: "relative overflow-hidden rounded-lg border border-white/10 bg-white/5",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scan$2d$line$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ScanLine$3e$__["ScanLine"], {
-                                                            className: "w-3 h-3 text-steel"
-                                                        }, void 0, false, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center gap-1.5 bg-gradient-to-r from-steel/30 to-transparent px-3 py-1 border-b border-white/10",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
+                                                                    className: "w-3 h-3 text-steel"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 240,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-steel text-[10px] font-bold uppercase tracking-widest",
+                                                                    children: "Safety Info"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 241,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 247,
+                                                            lineNumber: 239,
                                                             columnNumber: 21
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-steel text-[10px] font-bold uppercase tracking-widest",
-                                                            children: "Field Report"
-                                                        }, void 0, false, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-paper text-xs sm:text-sm font-medium px-3 py-2 leading-relaxed",
+                                                            children: [
+                                                                hazmonCard.subtitle,
+                                                                " - A chemical hazard requiring proper safety protocols."
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 248,
+                                                            lineNumber: 245,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 246,
+                                                    lineNumber: 238,
                                                     columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-paper text-sm font-medium px-3 py-2",
-                                                    children: hazmonCard.discoveredFrom
-                                                }, void 0, false, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 252,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 245,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "rounded-lg border border-white/10 overflow-hidden",
-                                            children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-between bg-black/30 px-3 py-2",
+                                                    className: "rounded-lg border border-white/10 overflow-hidden",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex items-center gap-2 min-w-0",
+                                                            className: "flex items-center justify-between bg-black/30 px-3 py-1.5",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0",
-                                                                    style: {
-                                                                        backgroundColor: hazmonCard.primaryColor
-                                                                    },
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HazmonIcon, {
-                                                                        className: "w-3.5 h-3.5 text-ink",
-                                                                        strokeWidth: 2.5
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                        lineNumber: 265,
-                                                                        columnNumber: 25
-                                                                    }, this)
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 261,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "font-display font-bold text-paper text-sm truncate",
+                                                                    className: "flex items-center gap-2 min-w-0",
                                                                     children: [
-                                                                        hazmonCard.typeLabel,
-                                                                        " Hazard"
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                                                                            style: {
+                                                                                backgroundColor: hazmonCard.primaryColor
+                                                                            },
+                                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HazmonIcon, {
+                                                                                className: "w-3 h-3 text-ink",
+                                                                                strokeWidth: 2.5
+                                                                            }, void 0, false, {
+                                                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                                lineNumber: 258,
+                                                                                columnNumber: 27
+                                                                            }, this)
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 254,
+                                                                            columnNumber: 25
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "font-display font-bold text-paper text-xs sm:text-sm truncate",
+                                                                            children: hazmonCard.typeLabel
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 260,
+                                                                            columnNumber: 25
+                                                                        }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 267,
+                                                                    lineNumber: 253,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "font-display font-bold text-base sm:text-lg text-paper tabular-nums flex-shrink-0",
+                                                                    children: [
+                                                                        powerScore,
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "text-[9px] text-steel font-normal ml-0.5",
+                                                                            children: "PWR"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 266,
+                                                                            columnNumber: 25
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 264,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 260,
+                                                            lineNumber: 252,
                                                             columnNumber: 21
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "font-display font-bold text-lg text-paper tabular-nums flex-shrink-0",
-                                                            children: [
-                                                                powerScore,
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-[10px] text-steel font-normal ml-0.5",
-                                                                    children: "PWR"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 273,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "px-3 py-2 bg-corrosive/10 border-t border-corrosive/20",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-steel text-[11px] sm:text-xs leading-relaxed",
+                                                                children: hazmonCard.ghsFact
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                lineNumber: 270,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 271,
+                                                            lineNumber: 269,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 259,
+                                                    lineNumber: 251,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "px-3 py-2 bg-corrosive/10 border-t border-corrosive/20",
+                                                    className: "grid grid-cols-3 divide-x divide-white/10 rounded-lg border border-white/10 bg-white/5 overflow-hidden text-center",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-steel text-xs leading-relaxed",
-                                                            children: hazmonCard.ghsFact
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 277,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-corrosive/80 text-[10px] italic mt-1.5",
-                                                            children: "Full PPE must be confirmed before this Hazmon can be safely handled."
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 278,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 276,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 258,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-3 divide-x divide-white/10 rounded-lg border border-white/10 bg-white/5 overflow-hidden text-center",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "px-2 py-2.5",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-steel text-[9px] font-bold uppercase tracking-wider mb-1.5",
-                                                            children: "Weakness"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 287,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        weakness && WeaknessIcon ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex flex-col items-center gap-1",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "px-1 py-2",
                                                             children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(WeaknessIcon, {
-                                                                    className: "w-4 h-4",
-                                                                    style: {
-                                                                        color: weakness.primaryColor
-                                                                    }
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-steel text-[8px] sm:text-[9px] font-bold uppercase tracking-wider mb-1",
+                                                                    children: "Weakness"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 277,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                weakness && WeaknessIcon ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex flex-col items-center gap-1",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(WeaknessIcon, {
+                                                                            className: "w-3.5 h-3.5",
+                                                                            style: {
+                                                                                color: weakness.primaryColor
+                                                                            }
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 282,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "text-paper text-[9px] sm:text-[10px] font-medium truncate w-full px-1",
+                                                                            children: weakness.name
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 283,
+                                                                            columnNumber: 27
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 281,
+                                                                    columnNumber: 25
+                                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-steel text-[9px]",
+                                                                    children: "None"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 288,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 276,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "px-1 py-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-steel text-[8px] sm:text-[9px] font-bold uppercase tracking-wider mb-1",
+                                                                    children: "Resistance"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
                                                                     lineNumber: 292,
-                                                                    columnNumber: 25
+                                                                    columnNumber: 23
                                                                 }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-paper text-[10px] font-medium truncate w-full",
-                                                                    children: weakness.name
-                                                                }, void 0, false, {
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex flex-col items-center gap-1",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__["ShieldCheck"], {
+                                                                            className: "w-3.5 h-3.5 text-safe"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 296,
+                                                                            columnNumber: 25
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "text-paper text-[9px] sm:text-[10px] font-medium",
+                                                                            children: [
+                                                                                "PPE Lv.",
+                                                                                hazmonCard.powerLevel
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 297,
+                                                                            columnNumber: 25
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 296,
-                                                                    columnNumber: 25
+                                                                    lineNumber: 295,
+                                                                    columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
                                                             lineNumber: 291,
-                                                            columnNumber: 23
-                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-steel text-[10px]",
-                                                            children: "None known"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 301,
-                                                            columnNumber: 23
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 286,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "px-2 py-2.5",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-steel text-[9px] font-bold uppercase tracking-wider mb-1.5",
-                                                            children: "Resistance"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 305,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex flex-col items-center gap-1",
+                                                            className: "px-1 py-2",
                                                             children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__["ShieldCheck"], {
-                                                                    className: "w-4 h-4 text-safe"
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-steel text-[8px] sm:text-[9px] font-bold uppercase tracking-wider mb-1",
+                                                                    children: "Retreat"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 309,
+                                                                    lineNumber: 303,
                                                                     columnNumber: 23
                                                                 }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-paper text-[10px] font-medium",
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex flex-col items-center gap-1",
                                                                     children: [
-                                                                        "PPE Lv.",
-                                                                        hazmonCard.powerLevel
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$door$2d$open$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DoorOpen$3e$__["DoorOpen"], {
+                                                                            className: "w-3.5 h-3.5 text-hazard"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 307,
+                                                                            columnNumber: 25
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "text-paper text-[9px] sm:text-[10px] font-medium",
+                                                                            children: "Evacuate"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                            lineNumber: 308,
+                                                                            columnNumber: 25
+                                                                        }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 310,
+                                                                    lineNumber: 306,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 308,
+                                                            lineNumber: 302,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 304,
+                                                    lineNumber: 275,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "px-2 py-2.5",
+                                                    className: "space-y-2 pt-2",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-steel text-[9px] font-bold uppercase tracking-wider mb-1.5",
-                                                            children: "Retreat"
+                                                        allowImageUpload && !showImageUpload && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            onClick: ()=>setShowImageUpload(true),
+                                                            variant: "outline",
+                                                            className: "w-full h-8 text-xs",
+                                                            children: localCard.customImageUrl ? '🖼️ Change Image' : '📷 Add Custom Image'
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
                                                             lineNumber: 316,
-                                                            columnNumber: 21
+                                                            columnNumber: 23
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex flex-col items-center gap-1",
+                                                        showImageUpload && allowImageUpload && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "bg-white/5 rounded-lg p-2 border border-white/10",
                                                             children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$door$2d$open$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DoorOpen$3e$__["DoorOpen"], {
-                                                                    className: "w-4 h-4 text-hazard"
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$HazmonImageUploader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                                    hazmonId: localCard.id,
+                                                                    currentImageUrl: localCard.customImageUrl,
+                                                                    onImageUpdated: (newUrl)=>{
+                                                                        setLocalCard({
+                                                                            ...localCard,
+                                                                            customImageUrl: newUrl
+                                                                        });
+                                                                        setShowImageUpload(false);
+                                                                    }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 320,
-                                                                    columnNumber: 23
+                                                                    lineNumber: 322,
+                                                                    columnNumber: 25
                                                                 }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-paper text-[10px] font-medium",
-                                                                    children: "Evacuate"
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                    onClick: ()=>setShowImageUpload(false),
+                                                                    variant: "ghost",
+                                                                    size: "sm",
+                                                                    className: "w-full mt-1 text-xs h-7",
+                                                                    children: "Cancel"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                                    lineNumber: 321,
-                                                                    columnNumber: 23
+                                                                    lineNumber: 330,
+                                                                    columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 319,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 315,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 285,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-steel text-xs italic leading-relaxed text-center",
-                                            children: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$types$2f$hazmon$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["RARITY_DESCRIPTIONS"][hazmonCard.rarity]
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 327,
-                                            columnNumber: 17
-                                        }, this),
-                                        hazmonCard.timesEncountered > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "text-center",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                variant: "muted",
-                                                className: "text-xs",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"], {
-                                                        size: 12,
-                                                        className: "mr-1"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                        lineNumber: 335,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    "Encountered ",
-                                                    hazmonCard.timesEncountered,
-                                                    "x"
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                lineNumber: 334,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 333,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2 pt-1",
-                                            children: [
-                                                allowImageUpload && !showImageUpload && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                    onClick: ()=>setShowImageUpload(true),
-                                                    variant: "outline",
-                                                    className: "w-full",
-                                                    size: "sm",
-                                                    children: localCard.customImageUrl ? '🖼️ Change Image' : '📷 Add Custom Image'
-                                                }, void 0, false, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 345,
-                                                    columnNumber: 21
-                                                }, this),
-                                                showImageUpload && allowImageUpload && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "bg-white/5 rounded-lg p-3 border border-white/10",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$HazmonImageUploader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                            hazmonId: localCard.id,
-                                                            currentImageUrl: localCard.customImageUrl,
-                                                            onImageUpdated: (newUrl)=>{
-                                                                setLocalCard({
-                                                                    ...localCard,
-                                                                    customImageUrl: newUrl
-                                                                });
-                                                                setShowImageUpload(false);
-                                                            }
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 357,
+                                                            lineNumber: 321,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                            onClick: ()=>setShowImageUpload(false),
-                                                            variant: "ghost",
-                                                            size: "sm",
-                                                            className: "w-full mt-2",
-                                                            children: "Cancel"
+                                                            onClick: onViewSafety,
+                                                            className: "w-full bg-gradient-to-r from-safe to-green-600 hover:from-safe/90 hover:to-green-600/90 text-ink font-display font-semibold h-10",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
+                                                                    className: "w-4 h-4 mr-1.5"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                                    lineNumber: 340,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                "View Safety Guide"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
+                                                            lineNumber: 336,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                            onClick: onClose,
+                                                            className: "w-full text-steel hover:text-paper text-xs sm:text-sm font-medium transition-colors pb-1",
+                                                            children: "Continue Scanning"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 365,
-                                                            columnNumber: 23
+                                                            lineNumber: 344,
+                                                            columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 356,
-                                                    columnNumber: 21
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                    onClick: onViewSafety,
-                                                    className: "w-full bg-gradient-to-r from-safe to-green-600 hover:from-safe/90 hover:to-green-600/90 text-ink font-display font-semibold",
-                                                    size: "lg",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
-                                                            className: "w-4 h-4"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                            lineNumber: 381,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        "View Safety Guide"
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 376,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: onClose,
-                                                    className: "w-full text-steel hover:text-paper text-sm font-medium transition-colors py-2",
-                                                    children: "Continue Scanning"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 385,
+                                                    lineNumber: 314,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 342,
+                                            lineNumber: 235,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 243,
+                                    lineNumber: 139,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-black/40 border-t border-white/10 px-4 py-2 text-center",
+                                    className: "bg-black/40 border-t border-white/10 px-4 py-2 text-center mt-auto flex-shrink-0",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-steel text-[10px] leading-snug",
+                                        className: "text-steel text-[9px] sm:text-[10px] leading-snug",
                                         children: hazmonCard.isMastered ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4057,14 +4021,14 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                                                     children: "MASTERED —"
                                                 }, void 0, false, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 399,
+                                                    lineNumber: 359,
                                                     columnNumber: 23
                                                 }, this),
-                                                " safety points earned for this Hazmon."
+                                                " safety points earned."
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 398,
+                                            lineNumber: 358,
                                             columnNumber: 21
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                             children: [
@@ -4073,30 +4037,30 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                                                     children: "HAZMON RULE:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                                    lineNumber: 404,
+                                                    lineNumber: 363,
                                                     columnNumber: 23
                                                 }, this),
-                                                " complete the safety guide to mark this card as Mastered."
+                                                " complete the guide to mark as Mastered."
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                            lineNumber: 403,
+                                            lineNumber: 362,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                        lineNumber: 396,
+                                        lineNumber: 356,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                                    lineNumber: 395,
+                                    lineNumber: 355,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                            lineNumber: 128,
+                            lineNumber: 129,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
@@ -4107,21 +4071,21 @@ function HazmonCardReveal({ hazmonCard, isNew, onClose, onViewSafety, allowImage
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-                lineNumber: 94,
+                lineNumber: 95,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-            lineNumber: 87,
+            lineNumber: 88,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/frontend/src/components/HazmonCardReveal.tsx",
-        lineNumber: 86,
+        lineNumber: 87,
         columnNumber: 5
     }, this);
 }
-_s(HazmonCardReveal, "UJQHSjXMAuhu0jVrDwgmhB0/ao8=");
+_s(HazmonCardReveal, "/sV5gKLkM/kmhKuy0lvndahA+T4=");
 _c = HazmonCardReveal;
 var _c;
 __turbopack_context__.k.register(_c, "HazmonCardReveal");
@@ -5261,7 +5225,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#FFA500',
         iconEmoji: '🔥',
         dexNumber: 1,
-        typeLabel: 'Fire'
+        typeLabel: 'Fire',
+        artworkPath: '/hazmon/ignivore.png'
     },
     'oxidizing': {
         id: 'oxidrax',
@@ -5275,7 +5240,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#FFFFFF',
         iconEmoji: '⚡',
         dexNumber: 2,
-        typeLabel: 'Plasma'
+        typeLabel: 'Plasma',
+        artworkPath: '/hazmon/oxidrax.png'
     },
     'explosive': {
         id: 'detonyx',
@@ -5289,7 +5255,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#1A1A1A',
         iconEmoji: '💥',
         dexNumber: 3,
-        typeLabel: 'Blast'
+        typeLabel: 'Blast',
+        artworkPath: '/hazmon/detonyx.png'
     },
     'corrosive': {
         id: 'corrolith',
@@ -5303,7 +5270,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#558B2F',
         iconEmoji: '🧪',
         dexNumber: 4,
-        typeLabel: 'Acid'
+        typeLabel: 'Acid',
+        artworkPath: '/hazmon/corrolith.png'
     },
     'acute-toxic': {
         id: 'venomask',
@@ -5317,7 +5285,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#4A148C',
         iconEmoji: '☠️',
         dexNumber: 5,
-        typeLabel: 'Toxin'
+        typeLabel: 'Toxin',
+        artworkPath: '/hazmon/venomask.png'
     },
     'health-hazard': {
         id: 'pulmonar',
@@ -5331,7 +5300,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#37474F',
         iconEmoji: '🫁',
         dexNumber: 6,
-        typeLabel: 'Bio'
+        typeLabel: 'Bio',
+        artworkPath: '/hazmon/pulmonar.jpeg'
     },
     'irritant': {
         id: 'itchling',
@@ -5345,7 +5315,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#FFEE58',
         iconEmoji: '⚠️',
         dexNumber: 7,
-        typeLabel: 'Sting'
+        typeLabel: 'Sting',
+        artworkPath: '/hazmon/itchling.png'
     },
     'environment': {
         id: 'aquabane',
@@ -5359,7 +5330,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#004D40',
         iconEmoji: '🐟',
         dexNumber: 8,
-        typeLabel: 'Nature'
+        typeLabel: 'Nature',
+        artworkPath: '/hazmon/aquabane.png'
     },
     'compressed-gas': {
         id: 'pressuron',
@@ -5373,7 +5345,8 @@ const HAZMON_DATABASE = {
         secondaryColor: '#0097A7',
         iconEmoji: '💨',
         dexNumber: 9,
-        typeLabel: 'Pressure'
+        typeLabel: 'Pressure',
+        artworkPath: '/hazmon/pressuron.png'
     }
 };
 const HAZMON_TOTAL = Object.keys(HAZMON_DATABASE).length;

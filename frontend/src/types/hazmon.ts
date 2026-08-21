@@ -180,7 +180,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '🫁',
     dexNumber: 6,
     typeLabel: 'Bio',
-    artworkPath: '/hazmon/pulmonar.png',
+    artworkPath: '/hazmon/pulmonar.jpeg',
   },
   'irritant': {
     id: 'itchling',

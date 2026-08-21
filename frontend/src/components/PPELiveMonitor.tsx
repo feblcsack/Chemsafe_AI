@@ -70,7 +70,11 @@ export default function PPELiveMonitor({ workerId, zoneId, requiredPpe }: Props)
       if (videoRef.current) videoRef.current.srcObject = stream;
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
-      const wsUrl = apiUrl.replace(/^http/, "ws") + `/ppe/stream/${workerId}/${zoneId}`;
+      
+      // PERBAIKAN: Otomatis deteksi kalau pakai https jadi wss, kalau http jadi ws
+      const wsProtocol = apiUrl.startsWith('https') ? 'wss' : 'ws';
+      const wsUrl = apiUrl.replace(/^https?/, wsProtocol) + `/ppe/stream/${workerId}/${zoneId}`;
+      
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 
