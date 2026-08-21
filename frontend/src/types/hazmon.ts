@@ -37,7 +37,7 @@ export interface HazmonData {
   iconEmoji: string; // temporary until we have custom artwork
   dexNumber: number; // 1-9, fixed position in the Hazdex
   typeLabel: string; // human-readable element name for the card's type chip
-  artworkPath?: string; // Path to custom artwork: /hazmon/{id}.png
+  artworkPath?: string; // Path to custom artwork: /hazmon/{id}.jpeg
 }
 
 export interface HazmonCard extends HazmonData {
@@ -105,7 +105,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '🔥',
     dexNumber: 1,
     typeLabel: 'Fire',
-    artworkPath: '/hazmon/ignivore.png',
+    artworkPath: '/hazmon/ignivore.jpeg',
   },
   'oxidizing': {
     id: 'oxidrax',
@@ -120,7 +120,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '⚡',
     dexNumber: 2,
     typeLabel: 'Plasma',
-    artworkPath: '/hazmon/oxidrax.png',
+    artworkPath: '/hazmon/oxidrax.jpeg',
   },
   'explosive': {
     id: 'detonyx',
@@ -135,7 +135,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '💥',
     dexNumber: 3,
     typeLabel: 'Blast',
-    artworkPath: '/hazmon/detonyx.png',
+    artworkPath: '/hazmon/detonyx.jpeg',
   },
   'corrosive': {
     id: 'corrolith',
@@ -150,7 +150,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '🧪',
     dexNumber: 4,
     typeLabel: 'Acid',
-    artworkPath: '/hazmon/corrolith.png',
+    artworkPath: '/hazmon/corrolith.jpeg',
   },
   'acute-toxic': {
     id: 'venomask',
@@ -165,7 +165,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '☠️',
     dexNumber: 5,
     typeLabel: 'Toxin',
-    artworkPath: '/hazmon/venomask.png',
+    artworkPath: '/hazmon/venomask.jpeg',
   },
   'health-hazard': {
     id: 'pulmonar',
@@ -195,7 +195,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '⚠️',
     dexNumber: 7,
     typeLabel: 'Sting',
-    artworkPath: '/hazmon/itchling.png',
+    artworkPath: '/hazmon/itchling.jpeg',
   },
   'environment': {
     id: 'aquabane',
@@ -210,7 +210,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '🐟',
     dexNumber: 8,
     typeLabel: 'Nature',
-    artworkPath: '/hazmon/aquabane.png',
+    artworkPath: '/hazmon/aquabane.jpeg',
   },
   'compressed-gas': {
     id: 'pressuron',
@@ -225,7 +225,7 @@ export const HAZMON_DATABASE: Record<GHSCategory, HazmonData> = {
     iconEmoji: '💨',
     dexNumber: 9,
     typeLabel: 'Pressure',
-    artworkPath: '/hazmon/pressuron.png',
+    artworkPath: '/hazmon/pressuron.jpeg',
   },
 };
 
