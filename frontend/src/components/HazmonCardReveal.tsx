@@ -1,8 +1,10 @@
 'use client';
 
 import type { CSSProperties } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HazmonCard, RARITY_DESCRIPTIONS, HAZMON_TOTAL, getWeaknessFor } from '@/types/hazmon';
+import HazmonImageUploader from '@/components/HazmonImageUploader';
 import {
   X,
   Shield,
@@ -29,6 +31,7 @@ interface HazmonCardRevealProps {
   isNew: boolean;
   onClose: () => void;
   onViewSafety: () => void;
+  allowImageUpload?: boolean; // Enable image upload in Hazdex view
 }
 
 // Map GHS categories to lucide icons
@@ -60,13 +63,21 @@ export default function HazmonCardReveal({
   isNew,
   onClose,
   onViewSafety,
+  allowImageUpload = false,
 }: HazmonCardRevealProps) {
-  const HazmonIcon = getHazmonIcon(hazmonCard.ghsCategory);
+  const [localCard, setLocalCard] = useState<HazmonCard>(hazmonCard);
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
+  const HazmonIcon = getHazmonIcon(localCard.ghsCategory);
   const holo = RARITY_HOLO[hazmonCard.rarity];
   const weakness = getWeaknessFor(hazmonCard.ghsCategory);
   const WeaknessIcon = weakness ? getHazmonIcon(weakness.ghsCategory) : null;
   const powerScore = hazmonCard.powerLevel * 20; // 20–100, "threat power" stat
   const dexNumber = (hazmonCard as any).dexNumber ?? 0;
+
+  // Get artwork path - prioritize artworkPath from HazmonData
+  const artworkSrc = (hazmonCard as any).artworkPath || localCard.customImageUrl;
 
   const rarityTextColors: Record<HazmonCard['rarity'], string> = {
     common: 'text-steel',
@@ -89,7 +100,7 @@ export default function HazmonCardReveal({
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative max-w-sm w-full"
+          className="relative w-full max-w-md mx-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* New Discovery Badge */}
@@ -160,30 +171,53 @@ export default function HazmonCardReveal({
 
               {/* --- Art Panel --- */}
               <div
-                className="relative h-40 mx-3 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
+                className="relative h-48 sm:h-56 mx-3 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
                 style={{
                   background: `radial-gradient(circle at 50% 40%, ${hazmonCard.primaryColor}35, ${hazmonCard.secondaryColor}25 70%, transparent 100%)`,
                 }}
               >
                 <div className="absolute inset-0 hazmon-sparkle-field" />
-                <motion.div
-                  animate={{
-                    scale: [1, 1.08, 1],
-                    rotate: [0, 4, -4, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="relative z-10"
-                >
-                  <HazmonIcon
-                    className="w-16 h-16"
-                    style={{ color: hazmonCard.primaryColor }}
-                    strokeWidth={1.5}
-                  />
-                </motion.div>
+                
+                {/* Custom Artwork or Icon */}
+                {artworkSrc && !imageError ? (
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    className="relative z-10 w-32 h-32 sm:w-40 sm:h-40"
+                  >
+                    <img
+                      src={artworkSrc}
+                      alt={hazmonCard.name}
+                      className="w-full h-full object-contain drop-shadow-2xl"
+                      onError={() => setImageError(true)}
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.08, 1],
+                      rotate: [0, 4, -4, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    className="relative z-10"
+                  >
+                    <HazmonIcon
+                      className="w-20 h-20 sm:w-24 sm:h-24"
+                      style={{ color: hazmonCard.primaryColor }}
+                      strokeWidth={1.5}
+                    />
+                  </motion.div>
+                )}
 
                 {/* Collection stamp */}
                 <div className="absolute bottom-2 right-2 bg-ink/70 backdrop-blur-sm rounded-md px-2 py-1 border border-white/10">
@@ -212,16 +246,16 @@ export default function HazmonCardReveal({
               </div>
 
               <div className="p-4 space-y-3">
-                {/* --- "Ability" banner: field report / source --- */}
+                {/* --- Safety Information --- */}
                 <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/5">
                   <div className="flex items-center gap-1.5 bg-gradient-to-r from-steel/30 to-transparent px-3 py-1 border-b border-white/10">
-                    <ScanLine className="w-3 h-3 text-steel" />
+                    <Shield className="w-3 h-3 text-steel" />
                     <span className="text-steel text-[10px] font-bold uppercase tracking-widest">
-                      Field Report
+                      Safety Information
                     </span>
                   </div>
-                  <p className="text-paper text-sm font-medium px-3 py-2">
-                    {hazmonCard.discoveredFrom}
+                  <p className="text-paper text-sm font-medium px-3 py-2 leading-relaxed">
+                    {hazmonCard.subtitle} - A chemical hazard requiring proper safety protocols and PPE compliance.
                   </p>
                 </div>
 
@@ -311,6 +345,39 @@ export default function HazmonCardReveal({
 
                 {/* Action Buttons */}
                 <div className="space-y-2 pt-1">
+                  {/* Custom Image Upload Section (only in Hazdex view) */}
+                  {allowImageUpload && !showImageUpload && (
+                    <Button
+                      onClick={() => setShowImageUpload(true)}
+                      variant="outline"
+                      className="w-full"
+                      size="sm"
+                    >
+                      {localCard.customImageUrl ? '🖼️ Change Image' : '📷 Add Custom Image'}
+                    </Button>
+                  )}
+
+                  {showImageUpload && allowImageUpload && (
+                    <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                      <HazmonImageUploader
+                        hazmonId={localCard.id}
+                        currentImageUrl={localCard.customImageUrl}
+                        onImageUpdated={(newUrl) => {
+                          setLocalCard({ ...localCard, customImageUrl: newUrl });
+                          setShowImageUpload(false);
+                        }}
+                      />
+                      <Button
+                        onClick={() => setShowImageUpload(false)}
+                        variant="ghost"
+                        size="sm"
+                        className="w-full mt-2"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+
                   <Button
                     onClick={onViewSafety}
                     className="w-full bg-gradient-to-r from-safe to-green-600 hover:from-safe/90 hover:to-green-600/90 text-ink font-display font-semibold"

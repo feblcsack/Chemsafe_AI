@@ -7,6 +7,7 @@ import GHSScanner from "@/components/GHSScanner";
 import EnhancedHazardResult from "@/components/EnhancedHazardResult";
 import HazmonCardReveal from "@/components/HazmonCardReveal";
 import CombinationAlert from "@/components/CombinationAlert";
+import QuickActionButtons, { householdQuickActions } from "@/components/QuickActionButtons";
 import { householdHazmonService } from "@/lib/hazmonService.household";
 import { GHSCategory, HazmonCard, CombinationAlert as CombinationAlertType } from "@/types/hazmon";
 import type { Detection } from "@/lib/onnx/inference";
@@ -266,6 +267,18 @@ export default function ScanPage() {
                 </CardContent>
               </Card>
             </Link>
+          </motion.div>
+        )}
+
+        {/* Quick Actions - Consistent with Worker Dashboard */}
+        {!detections && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6"
+          >
+            <QuickActionButtons actions={householdQuickActions} />
           </motion.div>
         )}
 

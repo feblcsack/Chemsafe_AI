@@ -414,7 +414,10 @@ export default function AdminLiveMonitoring() {
                 <p className="text-xs text-steel">
                   {monitoringActive 
                     ? '✅ Cameras actively monitoring for PPE compliance'
-                    : '⏸️ Monitoring paused - Click Start to begin PPE detection'}
+                    : '⏸️ Monitoring paused - Use Device Camera for secure monitoring'}
+                </p>
+                <p className="text-xs text-yellow-500 mt-1">
+                  ⚠️ IP cameras must use HTTPS URLs for Vercel deployment
                 </p>
               </div>
             </div>

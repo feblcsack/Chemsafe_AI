@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { QrCode, MapPin, Shield, ArrowLeft, CheckCircle2, AlertTriangle, Users, Camera } from "lucide-react";
+import QuickActionButtons, { workerQuickActions } from "@/components/QuickActionButtons";
 
 interface Zone {
   id: string;
@@ -347,29 +348,7 @@ export default function WorkerDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        {/* Hazdex Button */}
-        <Link href="/worker/hazdex">
-          <button className="w-full bg-gradient-to-br from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-xl p-4 text-left transition-all hover:scale-105 shadow-lg">
-            <div className="text-white text-3xl mb-2">🎴</div>
-            <h3 className="text-white text-sm font-bold mb-1">My Hazdex</h3>
-            <p className="text-purple-200 text-xs">
-              Koleksi Hazmon
-            </p>
-          </button>
-        </Link>
-
-        {/* GHS Scanner Button */}
-        <Link href="/worker/scan">
-          <button className="w-full bg-gradient-to-br from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 rounded-xl p-4 text-left transition-all hover:scale-105 shadow-lg">
-            <div className="text-white text-3xl mb-2">🔍</div>
-            <h3 className="text-white text-sm font-bold mb-1">Scan Label</h3>
-            <p className="text-orange-200 text-xs">
-              GHS Detection
-            </p>
-          </button>
-        </Link>
-      </div>
+      <QuickActionButtons actions={workerQuickActions} />
 
       {/* Check-in Flow */}
       {!zone && !scanning && !checkingIn && (

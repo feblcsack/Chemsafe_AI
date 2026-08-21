@@ -266,6 +266,7 @@ export default function WorkerHazdexPage() {
           onViewSafety={() => {
             router.push(`/safety/${selectedHazmon.ghsCategory}`);
           }}
+          allowImageUpload={true}
         />
       )}
     </main>

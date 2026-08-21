@@ -1979,10 +1979,18 @@ function AdminLiveMonitoring() {
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-xs text-steel",
-                                                        children: monitoringActive ? '✅ Cameras actively monitoring for PPE compliance' : '⏸️ Monitoring paused - Click Start to begin PPE detection'
+                                                        children: monitoringActive ? '✅ Cameras actively monitoring for PPE compliance' : '⏸️ Monitoring paused - Use Device Camera for secure monitoring'
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
                                                         lineNumber: 414,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs text-yellow-500 mt-1",
+                                                        children: "⚠️ IP cameras must use HTTPS URLs for Vercel deployment"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
+                                                        lineNumber: 419,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
@@ -2007,7 +2015,7 @@ function AdminLiveMonitoring() {
                                                 children: startingMonitoring ? 'Starting...' : '▶️ Start Monitoring'
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 423,
+                                                lineNumber: 426,
                                                 columnNumber: 17
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                 onClick: stopCameraMonitoring,
@@ -2016,7 +2024,7 @@ function AdminLiveMonitoring() {
                                                 children: "⏸️ Stop Monitoring"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 431,
+                                                lineNumber: 434,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2029,13 +2037,13 @@ function AdminLiveMonitoring() {
                                                 children: "🔄 Refresh"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 439,
+                                                lineNumber: 442,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 421,
+                                        lineNumber: 424,
                                         columnNumber: 13
                                     }, this)
                                 ]
@@ -2049,7 +2057,7 @@ function AdminLiveMonitoring() {
                                 children: '⚠️ No camera stations configured. Add cameras in the "Camera Setup" tab first.'
                             }, void 0, false, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 449,
+                                lineNumber: 452,
                                 columnNumber: 13
                             }, this)
                         ]
@@ -2075,7 +2083,7 @@ function AdminLiveMonitoring() {
                                         className: "mx-auto mb-2 text-hazard"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 460,
+                                        lineNumber: 463,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2083,7 +2091,7 @@ function AdminLiveMonitoring() {
                                         children: activeWorkers.length
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 461,
+                                        lineNumber: 464,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2091,18 +2099,18 @@ function AdminLiveMonitoring() {
                                         children: "Active Workers"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 462,
+                                        lineNumber: 465,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 459,
+                                lineNumber: 462,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 458,
+                            lineNumber: 461,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2114,7 +2122,7 @@ function AdminLiveMonitoring() {
                                         className: "mx-auto mb-2 text-blue-500"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 467,
+                                        lineNumber: 470,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2122,7 +2130,7 @@ function AdminLiveMonitoring() {
                                         children: monitoringStations.length
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 468,
+                                        lineNumber: 471,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2130,18 +2138,18 @@ function AdminLiveMonitoring() {
                                         children: "Camera Stations"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 469,
+                                        lineNumber: 472,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 466,
+                                lineNumber: 469,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 465,
+                            lineNumber: 468,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2153,7 +2161,7 @@ function AdminLiveMonitoring() {
                                         className: "mx-auto mb-2 text-safe"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 474,
+                                        lineNumber: 477,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2161,7 +2169,7 @@ function AdminLiveMonitoring() {
                                         children: Object.values(complianceData).filter((c)=>c.compliance_status === 'compliant').length
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 475,
+                                        lineNumber: 478,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2169,18 +2177,18 @@ function AdminLiveMonitoring() {
                                         children: "Compliant"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 478,
+                                        lineNumber: 481,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 473,
+                                lineNumber: 476,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 472,
+                            lineNumber: 475,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2192,7 +2200,7 @@ function AdminLiveMonitoring() {
                                         className: "mx-auto mb-2 text-corrosive"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 483,
+                                        lineNumber: 486,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2200,7 +2208,7 @@ function AdminLiveMonitoring() {
                                         children: Object.values(complianceData).filter((c)=>c.compliance_status === 'violation').length
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 484,
+                                        lineNumber: 487,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2208,24 +2216,24 @@ function AdminLiveMonitoring() {
                                         children: "Violations"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 487,
+                                        lineNumber: 490,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 482,
+                                lineNumber: 485,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 481,
+                            lineNumber: 484,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                    lineNumber: 457,
+                    lineNumber: 460,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2241,7 +2249,7 @@ function AdminLiveMonitoring() {
                                                 size: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 498,
+                                                lineNumber: 501,
                                                 columnNumber: 15
                                             }, this),
                                             "Active Workers",
@@ -2254,18 +2262,18 @@ function AdminLiveMonitoring() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 500,
+                                                lineNumber: 503,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 497,
+                                        lineNumber: 500,
                                         columnNumber: 13
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                    lineNumber: 496,
+                                    lineNumber: 499,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2277,14 +2285,14 @@ function AdminLiveMonitoring() {
                                                 className: "mx-auto mb-3 opacity-50"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 508,
+                                                lineNumber: 511,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "No workers currently checked in"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 509,
+                                                lineNumber: 512,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2292,7 +2300,7 @@ function AdminLiveMonitoring() {
                                                 children: "Workers will appear here when they scan QR codes and check into zones"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 510,
+                                                lineNumber: 513,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2303,7 +2311,7 @@ function AdminLiveMonitoring() {
                                                 children: "Refresh Worker List"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 511,
+                                                lineNumber: 514,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2314,47 +2322,47 @@ function AdminLiveMonitoring() {
                                                         children: "🔍 Troubleshooting:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 522,
+                                                        lineNumber: 525,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         children: "• Make sure workers have scanned QR codes"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 523,
+                                                        lineNumber: 526,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         children: "• Check browser console (F12) for errors"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 524,
+                                                        lineNumber: 527,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         children: "• Verify database has worker_zone_map entries"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 525,
+                                                        lineNumber: 528,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         children: "• Try clicking Refresh button above"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 526,
+                                                        lineNumber: 529,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 521,
+                                                lineNumber: 524,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 507,
+                                        lineNumber: 510,
                                         columnNumber: 15
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "space-y-3",
@@ -2373,7 +2381,7 @@ function AdminLiveMonitoring() {
                                                                 children: worker.worker_name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 548,
+                                                                lineNumber: 551,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2381,13 +2389,13 @@ function AdminLiveMonitoring() {
                                                                 children: compliance.status
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 551,
+                                                                lineNumber: 554,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 547,
+                                                        lineNumber: 550,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2397,14 +2405,14 @@ function AdminLiveMonitoring() {
                                                                 size: 14
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 560,
+                                                                lineNumber: 563,
                                                                 columnNumber: 25
                                                             }, this),
                                                             worker.zone_name
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 559,
+                                                        lineNumber: 562,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2417,14 +2425,14 @@ function AdminLiveMonitoring() {
                                                                         size: 12
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                        lineNumber: 566,
+                                                                        lineNumber: 569,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     worker.checked_in_at ? new Date(worker.checked_in_at).toLocaleTimeString() : "Just now"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 565,
+                                                                lineNumber: 568,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2436,7 +2444,7 @@ function AdminLiveMonitoring() {
                                                                             className: "text-blue-500"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                            lineNumber: 576,
+                                                                            lineNumber: 579,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2444,13 +2452,13 @@ function AdminLiveMonitoring() {
                                                                             children: "Monitored"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                            lineNumber: 577,
+                                                                            lineNumber: 580,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                    lineNumber: 575,
+                                                                    lineNumber: 578,
                                                                     columnNumber: 29
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                                     children: [
@@ -2458,54 +2466,54 @@ function AdminLiveMonitoring() {
                                                                             size: 12
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                            lineNumber: 581,
+                                                                            lineNumber: 584,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                             children: "No Camera"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                            lineNumber: 582,
+                                                                            lineNumber: 585,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                    lineNumber: 580,
+                                                                    lineNumber: 583,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 573,
+                                                                lineNumber: 576,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 564,
+                                                        lineNumber: 567,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, worker.worker_id, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 536,
+                                                lineNumber: 539,
                                                 columnNumber: 21
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 530,
+                                        lineNumber: 533,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                    lineNumber: 505,
+                                    lineNumber: 508,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 495,
+                            lineNumber: 498,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2518,19 +2526,19 @@ function AdminLiveMonitoring() {
                                                 size: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 599,
+                                                lineNumber: 602,
                                                 columnNumber: 15
                                             }, this),
                                             "Send Safety Alert"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 598,
+                                        lineNumber: 601,
                                         columnNumber: 13
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                    lineNumber: 597,
+                                    lineNumber: 600,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2547,7 +2555,7 @@ function AdminLiveMonitoring() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 607,
+                                                        lineNumber: 610,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2558,13 +2566,13 @@ function AdminLiveMonitoring() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 610,
+                                                        lineNumber: 613,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 606,
+                                                lineNumber: 609,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2574,7 +2582,7 @@ function AdminLiveMonitoring() {
                                                         children: "Alert Type"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 616,
+                                                        lineNumber: 619,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2601,18 +2609,18 @@ function AdminLiveMonitoring() {
                                                                 children: label
                                                             }, type, false, {
                                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                lineNumber: 623,
+                                                                lineNumber: 626,
                                                                 columnNumber: 23
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 617,
+                                                        lineNumber: 620,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 615,
+                                                lineNumber: 618,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2622,7 +2630,7 @@ function AdminLiveMonitoring() {
                                                         children: "Message"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 637,
+                                                        lineNumber: 640,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -2633,13 +2641,13 @@ function AdminLiveMonitoring() {
                                                         rows: 3
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 638,
+                                                        lineNumber: 641,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 636,
+                                                lineNumber: 639,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2652,7 +2660,7 @@ function AdminLiveMonitoring() {
                                                         children: sendingAlert ? "Sending..." : "Send Alert"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 648,
+                                                        lineNumber: 651,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2661,19 +2669,19 @@ function AdminLiveMonitoring() {
                                                         children: "Cancel"
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 655,
+                                                        lineNumber: 658,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 647,
+                                                lineNumber: 650,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 605,
+                                        lineNumber: 608,
                                         columnNumber: 15
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "text-center py-8 text-steel",
@@ -2683,37 +2691,37 @@ function AdminLiveMonitoring() {
                                                 className: "mx-auto mb-3 opacity-50"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 665,
+                                                lineNumber: 668,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Select a worker above to send an alert"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 666,
+                                                lineNumber: 669,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 664,
+                                        lineNumber: 667,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                    lineNumber: 603,
+                                    lineNumber: 606,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 596,
+                            lineNumber: 599,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                    lineNumber: 493,
+                    lineNumber: 496,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2726,7 +2734,7 @@ function AdminLiveMonitoring() {
                                         size: 20
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 677,
+                                        lineNumber: 680,
                                         columnNumber: 13
                                     }, this),
                                     "Live PPE Monitoring Stations",
@@ -2736,18 +2744,18 @@ function AdminLiveMonitoring() {
                                         children: "🔴 ACTIVE"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 680,
+                                        lineNumber: 683,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 676,
+                                lineNumber: 679,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 675,
+                            lineNumber: 678,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2759,14 +2767,14 @@ function AdminLiveMonitoring() {
                                         className: "mx-auto mb-3 opacity-50"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 689,
+                                        lineNumber: 692,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "No monitoring stations configured"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 690,
+                                        lineNumber: 693,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2774,13 +2782,13 @@ function AdminLiveMonitoring() {
                                         children: 'Set up cameras in the "Camera Setup" tab'
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 691,
+                                        lineNumber: 694,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 688,
+                                lineNumber: 691,
                                 columnNumber: 13
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "grid grid-cols-1 lg:grid-cols-2 gap-6",
@@ -2800,7 +2808,7 @@ function AdminLiveMonitoring() {
                                                         children: station.station_name
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 706,
+                                                        lineNumber: 709,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2808,13 +2816,13 @@ function AdminLiveMonitoring() {
                                                         children: station.status === "active" && monitoringActive ? "Monitoring" : station.status
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 707,
+                                                        lineNumber: 710,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 705,
+                                                lineNumber: 708,
                                                 columnNumber: 21
                                             }, this),
                                             station.status === "active" && monitoringActive ? // Check camera type and render appropriate component
@@ -2835,7 +2843,7 @@ function AdminLiveMonitoring() {
                                                         requiredPPE: requiredPPE
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 727,
+                                                        lineNumber: 730,
                                                         columnNumber: 29
                                                     }, this);
                                                 } else if (station.camera_url) {
@@ -2847,7 +2855,7 @@ function AdminLiveMonitoring() {
                                                         requiredPPE: requiredPPE
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 738,
+                                                        lineNumber: 741,
                                                         columnNumber: 29
                                                     }, this);
                                                 } else {
@@ -2862,25 +2870,25 @@ function AdminLiveMonitoring() {
                                                                     className: "mx-auto mb-2 opacity-50"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                    lineNumber: 750,
+                                                                    lineNumber: 753,
                                                                     columnNumber: 33
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                     children: "No camera configured"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                                    lineNumber: 751,
+                                                                    lineNumber: 754,
                                                                     columnNumber: 33
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 749,
+                                                            lineNumber: 752,
                                                             columnNumber: 31
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                        lineNumber: 748,
+                                                        lineNumber: 751,
                                                         columnNumber: 29
                                                     }, this);
                                                 }
@@ -2894,20 +2902,20 @@ function AdminLiveMonitoring() {
                                                             className: "mx-auto mb-2 opacity-50"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 761,
+                                                            lineNumber: 764,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             children: "No camera configured"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 762,
+                                                            lineNumber: 765,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                    lineNumber: 760,
+                                                    lineNumber: 763,
                                                     columnNumber: 27
                                                 }, this) : !monitoringActive ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "text-center text-sm",
@@ -2917,14 +2925,14 @@ function AdminLiveMonitoring() {
                                                             className: "mx-auto mb-2 opacity-50"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 766,
+                                                            lineNumber: 769,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             children: "Monitoring Paused"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 767,
+                                                            lineNumber: 770,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2932,13 +2940,13 @@ function AdminLiveMonitoring() {
                                                             children: 'Click "Start Monitoring" to begin'
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 768,
+                                                            lineNumber: 771,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                    lineNumber: 765,
+                                                    lineNumber: 768,
                                                     columnNumber: 27
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "text-center text-sm",
@@ -2948,25 +2956,25 @@ function AdminLiveMonitoring() {
                                                             className: "mx-auto mb-2 opacity-50"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 772,
+                                                            lineNumber: 775,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             children: "Camera Offline"
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                            lineNumber: 773,
+                                                            lineNumber: 776,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                    lineNumber: 771,
+                                                    lineNumber: 774,
                                                     columnNumber: 27
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 758,
+                                                lineNumber: 761,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2978,30 +2986,30 @@ function AdminLiveMonitoring() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                                lineNumber: 779,
+                                                lineNumber: 782,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, station.id, true, {
                                         fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                        lineNumber: 704,
+                                        lineNumber: 707,
                                         columnNumber: 19
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                                lineNumber: 694,
+                                lineNumber: 697,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                            lineNumber: 686,
+                            lineNumber: 689,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/frontend/src/components/AdminLiveMonitoring.tsx",
-                    lineNumber: 674,
+                    lineNumber: 677,
                     columnNumber: 7
                 }, this)
             ]
