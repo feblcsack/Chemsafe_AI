@@ -1,10 +1,40 @@
-# Railway should ignore frontend files
-frontend/
-node_modules/
-.next/
+# Ignore documentation and non-essential files for deployment
 *.md
-.git/
-.vscode/
+!README.md
+.git
+.gitignore
+.DS_Store
+*.log
+.vscode
+.idea
 
-# Keep only backend
-!backend/
+# Frontend development files
+frontend/.next
+frontend/node_modules
+frontend/.env.local
+frontend/.env.development
+
+# Backend development files
+backend/.venv
+backend/__pycache__
+backend/*.pyc
+backend/.pytest_cache
+
+# Test files
+**/*test.py
+**/*test.ts
+**/*test.tsx
+**/__tests__
+**/tests
+
+# Documentation
+docs/
+*.pdf
+AGENTS.md
+CLAUDE.md
+TROUBLESHOOTING.md
+*_FIX*.md
+*_STATUS.md
+*_GUIDE.md
+*_COMPLETE.md
+*_CHECKLIST.md

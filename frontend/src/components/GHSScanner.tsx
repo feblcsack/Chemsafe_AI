@@ -208,7 +208,7 @@ export default function GHSScanner({ onResult }: Props) {
     // Add timeout protection
     const timeoutId = setTimeout(() => {
       if (captureInProgressRef.current) {
-        console.error("Capture timeout - resetting");
+        // Silent timeout - just reset state
         captureInProgressRef.current = false;
         setScanning(false);
         setCaptureStatus(null);
@@ -224,7 +224,9 @@ export default function GHSScanner({ onResult }: Props) {
       setLiveDetections(detections);
       setCaptureSuccess(true);
       setCaptureStatus(
-        detections.length > 0 ? `${detections.length} pictogram ditemukan` : "Label berhasil ditangkap"
+        detections.length > 0
+          ? `${detections.length} pictogram${detections.length > 1 ? 's' : ''} found`
+          : "Label captured successfully"
       );
 
       if (successTimeoutRef.current !== null) {
@@ -326,7 +328,7 @@ export default function GHSScanner({ onResult }: Props) {
                 >
                   <CheckCircle2 className="text-safe" size={28} />
                 </motion.div>
-                <p className="font-display text-base font-bold text-paper">Pictogram ditemukan</p>
+                <p className="font-display text-base font-bold text-paper">Pictogram detected</p>
                 <p className="mt-1 text-sm text-steel">{captureStatus}</p>
               </motion.div>
 

@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { resolveCurrentUserContext } from "@/lib/supabase/userContext";
+import { motion, AnimatePresence } from "framer-motion";
+import CameraSourceSelector, { type CameraSourceType } from "@/components/CameraSourceSelector";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Camera, Plus, Settings, Trash2, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Camera, Plus, Settings, Trash2, Eye, EyeOff, Loader2, CheckCircle, Zap } from "lucide-react";
 
 interface Zone {
   id: string;
@@ -19,6 +21,9 @@ interface MonitoringStation {
   zone_id: string;
   station_name: string;
   camera_url?: string;
+  camera_type?: CameraSourceType;
+  camera_device_id?: string;
+  camera_device_label?: string;
   stream_key?: string;
   status: "active" | "inactive" | "maintenance";
   zone_name?: string;
@@ -30,11 +35,15 @@ export default function MonitoringStationSetup() {
   const [isAddingStation, setIsAddingStation] = useState(false);
   const [editingStation, setEditingStation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showCameraSelector, setShowCameraSelector] = useState(false);
 
   // Form state
   const [stationName, setStationName] = useState("");
   const [selectedZone, setSelectedZone] = useState("");
   const [cameraUrl, setCameraUrl] = useState("");
+  const [cameraType, setCameraType] = useState<CameraSourceType | null>(null);
+  const [cameraDeviceId, setCameraDeviceId] = useState("");
+  const [cameraDeviceLabel, setCameraDeviceLabel] = useState("");
   const [streamKey, setStreamKey] = useState("");
 
   useEffect(() => {
@@ -59,7 +68,7 @@ export default function MonitoringStationSetup() {
       const { data: stationsData } = await supabase
         .from("monitoring_stations")
         .select(`
-          id, zone_id, station_name, camera_url, stream_key, status,
+          id, zone_id, station_name, camera_url, camera_type, camera_device_id, camera_device_label, stream_key, status,
           zones!monitoring_stations_zone_id_fkey (name)
         `)
         .in("zone_id", (zonesData || []).map(z => z.id));
@@ -87,8 +96,11 @@ export default function MonitoringStationSetup() {
         zone_id: selectedZone,
         station_name: stationName,
         camera_url: cameraUrl.trim() || null,
+        camera_type: cameraType || null,
+        camera_device_id: cameraDeviceId || null,
+        camera_device_label: cameraDeviceLabel || null,
         stream_key: streamKey.trim() || null,
-        status: cameraUrl.trim() ? "active" : "inactive",
+        status: (cameraUrl.trim() || cameraDeviceId) ? "active" : "inactive",
         created_by: context.user?.id
       };
 
@@ -113,9 +125,13 @@ export default function MonitoringStationSetup() {
       setStationName("");
       setSelectedZone("");
       setCameraUrl("");
+      setCameraType(null);
+      setCameraDeviceId("");
+      setCameraDeviceLabel("");
       setStreamKey("");
       setIsAddingStation(false);
       setEditingStation(null);
+      setShowCameraSelector(false);
       
       await loadData();
     } catch (error) {
@@ -164,18 +180,26 @@ export default function MonitoringStationSetup() {
     setStationName(station.station_name);
     setSelectedZone(station.zone_id);
     setCameraUrl(station.camera_url || "");
+    setCameraType(station.camera_type || null);
+    setCameraDeviceId(station.camera_device_id || "");
+    setCameraDeviceLabel(station.camera_device_label || "");
     setStreamKey(station.stream_key || "");
     setEditingStation(station.id);
     setIsAddingStation(true);
+    setShowCameraSelector(false);
   }
 
   function cancelEdit() {
     setStationName("");
     setSelectedZone("");
     setCameraUrl("");
+    setCameraType(null);
+    setCameraDeviceId("");
+    setCameraDeviceLabel("");
     setStreamKey("");
     setIsAddingStation(false);
     setEditingStation(null);
+    setShowCameraSelector(false);
   }
 
   if (loading) {
@@ -202,87 +226,165 @@ export default function MonitoringStationSetup() {
       </div>
 
       {/* Add/Edit Station Form */}
-      {isAddingStation && (
-        <Card className="border-hazard/30">
-          <CardHeader>
-            <CardTitle>
-              {editingStation ? "Edit Monitoring Station" : "Add Monitoring Station"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Station Name</label>
-                <Input
-                  value={stationName}
-                  onChange={(e) => setStationName(e.target.value)}
-                  placeholder="e.g., Chemical Storage Camera 1"
-                />
-              </div>
+      <AnimatePresence>
+        {isAddingStation && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="border-hazard/30 bg-hazard/5">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>{editingStation ? "Edit Monitoring Station" : "Add Monitoring Station"}</span>
+                  {(cameraUrl && cameraType) && (
+                    <Badge className="bg-safe/20 text-safe border-safe/30">
+                      <CheckCircle size={12} className="mr-1" />
+                      Camera Configured
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Step 1: Basic Info */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-hazard">
+                    <Zap size={16} />
+                    <span>Step 1: Basic Information</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Station Name *</label>
+                      <Input
+                        value={stationName}
+                        onChange={(e) => setStationName(e.target.value)}
+                        placeholder="e.g., Chemical Storage Camera 1"
+                      />
+                    </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Zone</label>
-                <select
-                  value={selectedZone}
-                  onChange={(e) => setSelectedZone(e.target.value)}
-                  className="w-full p-2 rounded border border-white/20 bg-white/5"
-                >
-                  <option value="">Select a zone</option>
-                  {zones.map(zone => (
-                    <option key={zone.id} value={zone.id}>
-                      {zone.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Monitoring Zone *</label>
+                      <select
+                        value={selectedZone}
+                        onChange={(e) => setSelectedZone(e.target.value)}
+                        className="w-full p-2 rounded border border-white/20 bg-white/5"
+                      >
+                        <option value="">Select a zone</option>
+                        {zones.map(zone => (
+                          <option key={zone.id} value={zone.id}>
+                            {zone.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Camera URL</label>
-              <Input
-                value={cameraUrl}
-                onChange={(e) => setCameraUrl(e.target.value)}
-                placeholder="Example: http://192.168.1.100:8080/video"
-              />
-              <p className="text-xs text-steel mt-1">
-                For phone IP camera: http://[phone-ip]:8080/video
-              </p>
-              <p className="text-xs text-steel mt-1">
-                For RTSP camera: rtsp://[camera-ip]:554/stream
-              </p>
-              <p className="text-xs text-steel mt-1">
-                For MJPEG: http://[camera-ip]/mjpeg
-              </p>
-            </div>
+                {/* Step 2: Camera Setup */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-hazard">
+                      <Camera size={16} />
+                      <span>Step 2: Camera Configuration</span>
+                    </div>
+                    {!showCameraSelector && (cameraUrl || cameraType) && (
+                      <Button
+                        onClick={() => setShowCameraSelector(true)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        Change Camera
+                      </Button>
+                    )}
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Stream Key (Optional)</label>
-              <Input
-                value={streamKey}
-                onChange={(e) => setStreamKey(e.target.value)}
-                placeholder="Authentication key or token"
-                type="password"
-              />
-              <p className="text-xs text-steel mt-1">
-                Authentication key if required by your camera system
-              </p>
-            </div>
+                  {showCameraSelector || (!cameraUrl && !cameraType) ? (
+                    <CameraSourceSelector
+                      onSourceSelected={(source) => {
+                        if (source.type === "device") {
+                          // For device cameras, store deviceId and label separately
+                          setCameraUrl(""); // Clear URL for device cameras
+                          setCameraType("device");
+                          setCameraDeviceId(source.deviceId || "");
+                          setCameraDeviceLabel(source.label || "");
+                        } else {
+                          // For network cameras, store URL
+                          setCameraUrl(source.url || "");
+                          setCameraType(source.type);
+                          setCameraDeviceId(""); // Clear device fields
+                          setCameraDeviceLabel("");
+                        }
+                        setShowCameraSelector(false);
+                      }}
+                      currentSource={
+                        cameraType === "device" && cameraDeviceId
+                          ? { type: "device", deviceId: cameraDeviceId, label: cameraDeviceLabel }
+                          : cameraUrl && cameraType
+                          ? { type: cameraType, url: cameraUrl }
+                          : undefined
+                      }
+                    />
+                  ) : (
+                    <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle size={18} className="text-safe" />
+                          <span className="font-medium">Camera Configured</span>
+                        </div>
+                        <Badge className="capitalize">{cameraType?.replace("_", " ")}</Badge>
+                      </div>
+                      <p className="text-sm text-steel font-mono">
+                        {cameraType === "device" 
+                          ? (cameraDeviceLabel || "Device Camera")
+                          : cameraUrl}
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-            <div className="flex gap-2">
-              <Button 
-                onClick={saveStation}
-                disabled={!stationName.trim() || !selectedZone}
-                className="flex-1"
-              >
-                {editingStation ? "Update Station" : "Add Station"}
-              </Button>
-              <Button onClick={cancelEdit} variant="outline">
-                Cancel
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                {/* Optional: Authentication */}
+                {cameraType && cameraType !== "device" && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-steel">
+                      <Settings size={14} />
+                      <span>Optional: Authentication</span>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Stream Key / Token</label>
+                      <Input
+                        value={streamKey}
+                        onChange={(e) => setStreamKey(e.target.value)}
+                        placeholder="Authentication key if required"
+                        type="password"
+                      />
+                      <p className="text-xs text-steel mt-1">
+                        Leave empty if camera doesn't require authentication
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 pt-4 border-t border-white/10">
+                  <Button 
+                    onClick={saveStation}
+                    disabled={!stationName.trim() || !selectedZone || (!cameraUrl && !cameraType)}
+                    className="flex-1"
+                  >
+                    <CheckCircle size={16} />
+                    {editingStation ? "Update Station" : "Create Station"}
+                  </Button>
+                  <Button onClick={cancelEdit} variant="outline">
+                    Cancel
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Stations List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -301,8 +403,15 @@ export default function MonitoringStationSetup() {
             <Card key={station.id} className="border-white/10">
               <CardContent className="pt-5">
                 <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-display font-semibold">{station.station_name}</h3>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-display font-semibold">{station.station_name}</h3>
+                      {station.camera_type && (
+                        <Badge variant="muted" className="text-xs capitalize">
+                          {station.camera_type.replace("_", " ")}
+                        </Badge>
+                      )}
+                    </div>
                     <p className="text-sm text-steel">{station.zone_name}</p>
                   </div>
                   <Badge 

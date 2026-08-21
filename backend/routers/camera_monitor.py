@@ -4,16 +4,17 @@ IP Camera PPE Monitoring Service
 Continuously pulls frames from monitoring station cameras,
 runs PPE detection, and logs compliance events.
 """
-from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi import APIRouter, BackgroundTasks, HTTPException, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
 import asyncio
 import os
 import time
 import cv2
 import numpy as np
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from datetime import datetime, timedelta
 import logging
+import json
 from supabase import create_client, Client
 
 from ppe_engine import ppe_engine
@@ -302,6 +303,82 @@ async def get_monitoring_status():
         "active_monitors": len(_active_monitors),
         "monitors": status
     }
+
+
+@router.post("/detect-frame")
+async def detect_frame(
+    image: UploadFile = File(...),
+    station_id: str = Form(...),
+    required_ppe: str = Form("[]")
+):
+    """
+    Detect PPE in a single uploaded frame (for device cameras).
+    
+    This endpoint allows browser-based device cameras to send frames
+    for PPE detection without needing continuous video streaming.
+    """
+    try:
+        # Parse required PPE
+        required_ppe_list: List[str] = json.loads(required_ppe)
+        
+        # Read image bytes
+        image_bytes = await image.read()
+        
+        # Run PPE detection
+        result = await asyncio.to_thread(
+            ppe_engine.detect,
+            image_bytes,
+            0.4,  # confidence threshold
+            required_ppe_list
+        )
+        
+        # Get zone_id for the station
+        zone_id = None
+        if supabase:
+            try:
+                station_result = supabase.table("monitoring_stations").select("zone_id").eq("id", station_id).single().execute()
+                if station_result.data:
+                    zone_id = station_result.data.get("zone_id")
+            except Exception as e:
+                logger.warning(f"Failed to fetch zone for station {station_id}: {e}")
+        
+        # Log PPE events if we have zone_id
+        if supabase and zone_id:
+            status = "compliant" if result['compliant'] else "violation"
+            
+            # Get workers in zone
+            try:
+                workers_result = supabase.table("worker_zone_map").select("worker_id").eq("zone_id", zone_id).execute()
+                if workers_result.data:
+                    for worker_row in workers_result.data:
+                        worker_id = worker_row['worker_id']
+                        try:
+                            supabase.table("ppe_events").insert({
+                                "worker_id": worker_id,
+                                "zone_id": zone_id,
+                                "detected_ppe": result['detections'],
+                                "compliance_status": status,
+                                "camera_station_id": station_id
+                            }).execute()
+                        except Exception as e:
+                            logger.error(f"Failed to log PPE event for worker {worker_id}: {e}")
+            except Exception as e:
+                logger.error(f"Failed to fetch workers for zone {zone_id}: {e}")
+        
+        # Return detection result
+        return {
+            'timestamp': datetime.now().isoformat(),
+            'compliant': result['compliant'],
+            'violations': result['violations'],
+            'detections': result['detections'],
+            'inference_ms': result['inference_ms']
+        }
+        
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid required_ppe JSON")
+    except Exception as e:
+        logger.error(f"Error detecting frame: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/station/{station_id}/latest")

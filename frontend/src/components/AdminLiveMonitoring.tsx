@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import CameraPPEOverlay from "@/components/CameraPPEOverlay";
+import DeviceCameraStream from "@/components/DeviceCameraStream";
 
 // Loading Skeleton Component
 function LoadingSkeleton() {
@@ -36,11 +37,20 @@ interface Worker {
   checked_in_at?: string;
 }
 
+interface Zone {
+  id: string;
+  name: string;
+  required_ppe: string[];
+}
+
 interface MonitoringStation {
   id: string;
   zone_id: string;
   station_name: string;
   camera_url?: string;
+  camera_type?: string;
+  camera_device_id?: string;
+  camera_device_label?: string;
   status: "active" | "inactive" | "maintenance";
 }
 
@@ -53,6 +63,7 @@ interface ComplianceStatus {
 
 export default function AdminLiveMonitoring() {
   const [activeWorkers, setActiveWorkers] = useState<Worker[]>([]);
+  const [zones, setZones] = useState<Zone[]>([]);
   const [monitoringStations, setMonitoringStations] = useState<MonitoringStation[]>([]);
   const [complianceData, setComplianceData] = useState<Record<string, ComplianceStatus>>({});
   const [selectedWorker, setSelectedWorker] = useState<string | null>(null);
@@ -140,10 +151,10 @@ export default function AdminLiveMonitoring() {
       console.log("ALL zones in database:", allZones);
       console.log("Current admin org_id:", context.orgId);
 
-      // Get zones for this org
+      // Get zones for this org WITH required_ppe field
       const { data: orgZones, error: zoneError } = await supabase
         .from("zones")
-        .select("id, name")
+        .select("id, name, required_ppe")
         .eq("org_id", context.orgId);
 
       if (zoneError) {
@@ -157,8 +168,12 @@ export default function AdminLiveMonitoring() {
         console.warn("No zones found for this organization. Admin org_id:", context.orgId);
         console.warn("Create a zone in 'Assess Hazards' tab first!");
         setActiveWorkers([]);
+        setZones([]);
         return;
       }
+
+      // Store zones with required PPE data
+      setZones(orgZones);
 
       const zoneIds = orgZones.map(z => z.id);
       console.log("Looking for workers in these zone IDs:", zoneIds);
@@ -215,14 +230,18 @@ export default function AdminLiveMonitoring() {
       
       setActiveWorkers(formattedWorkers);
 
-      // Load monitoring stations
+      // Load monitoring stations with all camera fields
       const { data: stations, error: stationsError } = await supabase
         .from("monitoring_stations")
-        .select("*")
+        .select("id, zone_id, station_name, camera_url, camera_type, camera_device_id, camera_device_label, status")
         .in("zone_id", formattedWorkers.map(w => w.zone_id));
+      
+      console.log("📹 Loaded monitoring stations:", stations);
       
       if (!stationsError) {
         setMonitoringStations(stations || []);
+      } else {
+        console.error("Error loading monitoring stations:", stationsError);
       }
 
       // Load latest compliance data for each worker
@@ -675,8 +694,11 @@ export default function AdminLiveMonitoring() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {monitoringStations.map((station) => {
                 const zoneData = activeWorkers.find(w => w.zone_id === station.zone_id);
-                // Get zone's required PPE
-                const requiredPPE: string[] = []; // Will be populated from zone data
+                // Get zone's required PPE from zones state
+                const zone = zones.find(z => z.id === station.zone_id);
+                const requiredPPE: string[] = zone?.required_ppe || [];
+                
+                console.log(`📋 Station ${station.station_name} - Zone ${zone?.name}: Required PPE =`, requiredPPE);
                 
                 return (
                   <div key={station.id}>
@@ -689,16 +711,52 @@ export default function AdminLiveMonitoring() {
                       </Badge>
                     </div>
                     
-                    {station.camera_url && station.status === "active" && monitoringActive ? (
-                      <CameraPPEOverlay
-                        stationId={station.id}
-                        stationName={station.station_name}
-                        cameraUrl={station.camera_url}
-                        requiredPPE={requiredPPE}
-                      />
+                    {station.status === "active" && monitoringActive ? (
+                      // Check camera type and render appropriate component
+                      (() => {
+                        console.log(`🎬 Rendering station ${station.station_name}:`, {
+                          camera_type: station.camera_type,
+                          camera_device_id: station.camera_device_id,
+                          camera_url: station.camera_url,
+                          status: station.status
+                        });
+
+                        if (station.camera_type === "device" && station.camera_device_id) {
+                          console.log(`📱 Rendering DeviceCameraStream for ${station.station_name}`);
+                          return (
+                            <DeviceCameraStream
+                              stationId={station.id}
+                              stationName={station.station_name}
+                              deviceId={station.camera_device_id}
+                              deviceLabel={station.camera_device_label}
+                              requiredPPE={requiredPPE}
+                            />
+                          );
+                        } else if (station.camera_url) {
+                          console.log(`🌐 Rendering CameraPPEOverlay for ${station.station_name}`);
+                          return (
+                            <CameraPPEOverlay
+                              stationId={station.id}
+                              stationName={station.station_name}
+                              cameraUrl={station.camera_url}
+                              requiredPPE={requiredPPE}
+                            />
+                          );
+                        } else {
+                          console.warn(`⚠️ No camera configured for ${station.station_name}`);
+                          return (
+                            <div className="aspect-video bg-black rounded-lg flex items-center justify-center text-steel">
+                              <div className="text-center text-sm">
+                                <Camera size={24} className="mx-auto mb-2 opacity-50" />
+                                <p>No camera configured</p>
+                              </div>
+                            </div>
+                          );
+                        }
+                      })()
                     ) : (
                       <div className="aspect-video bg-black rounded-lg flex items-center justify-center text-steel">
-                        {!station.camera_url ? (
+                        {!(station.camera_url || station.camera_device_id) ? (
                           <div className="text-center text-sm">
                             <Camera size={24} className="mx-auto mb-2 opacity-50" />
                             <p>No camera configured</p>

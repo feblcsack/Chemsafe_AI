@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Html5Qrcode } from "html5-qrcode";
 import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -343,6 +344,31 @@ export default function WorkerDashboard() {
           Hello, {workerName}
         </h1>
         <p className="text-steel text-sm">Your workplace safety dashboard</p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        {/* Hazdex Button */}
+        <Link href="/worker/hazdex">
+          <button className="w-full bg-gradient-to-br from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-xl p-4 text-left transition-all hover:scale-105 shadow-lg">
+            <div className="text-white text-3xl mb-2">🎴</div>
+            <h3 className="text-white text-sm font-bold mb-1">My Hazdex</h3>
+            <p className="text-purple-200 text-xs">
+              Koleksi Hazmon
+            </p>
+          </button>
+        </Link>
+
+        {/* GHS Scanner Button */}
+        <Link href="/worker/scan">
+          <button className="w-full bg-gradient-to-br from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 rounded-xl p-4 text-left transition-all hover:scale-105 shadow-lg">
+            <div className="text-white text-3xl mb-2">🔍</div>
+            <h3 className="text-white text-sm font-bold mb-1">Scan Label</h3>
+            <p className="text-orange-200 text-xs">
+              GHS Detection
+            </p>
+          </button>
+        </Link>
       </div>
 
       {/* Check-in Flow */}
